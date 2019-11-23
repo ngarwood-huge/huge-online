@@ -1,0 +1,41 @@
+/*** ESSENTIAL STYLES ***/
+.sf-menu, .sf-menu * {
+	margin:			0;
+	padding:		0;
+	list-style:		none;
+}
+.sf-menu {
+	line-height:	1.0;
+}
+.sf-menu .mega-col-block {
+background:none;
+}
+.tvtma-megamnu-fullwidth .drop-menu-mega {
+	width:1170px;
+}
+.sf-menu .drop-menu-mega  .tvtma-megamnu-content > .block .megacol-header-top {
+	font-weight:bold;
+}
+.sf-menu .drop-menu-mega  .tvtma-megamnu-content > .block {
+	display:block!important;
+	position:relative;
+	text-indent:0;
+	top:0;
+	left:0;
+	margin:0;
+	padding:0 15px;
+} 
+.sf-menu .drop-menu-mega  .tvtma-megamnu-content > .block ul.drop-menu {
+	position:relative;
+	display:block!important;
+	text-indent:0;
+	top:0;
+	left:0;
+	opacity:1!important;
+	padding:0;
+	margin:0;
+}
+.sf-menu .drop-menu-mega  .tvtma-megamnu-content > .block ul.drop-menu li {
+	text-transform:none;
+	
+}
