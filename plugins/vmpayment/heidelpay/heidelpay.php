@@ -686,7 +686,10 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$vmms = new VirtueMartModelShipmentmethod();
 			$shipmentInfo = $vmms->getShipments();
 
-			foreach($shipmentInfo as $skey => $svalue){
+            file_put_contents('/home/hp3-linc7-nfs1-x/304/1810304/user/shipment.log', PHP_EOL . 'Shipment Info: '. print_r($shipmentInfo, true) . PHP_EOL, FILE_APPEND) ;
+
+
+            foreach($shipmentInfo as $skey => $svalue){
 				if($svalue->virtuemart_shipmentmethod_id == $cart->virtuemart_shipmentmethod_id){
 					$shipmentData = array();
 					foreach (explode("|", $svalue->shipment_params) as $line) {

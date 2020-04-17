@@ -28,7 +28,7 @@ if ($this->layoutName!='default') {
 			<label class="sr-only" for=""><?php echo $this->coupon_text; ?></label>
 		    <input type="text" name="coupon_code" size="40" maxlength="50" class="form-control coupon" alt="<?php echo $this->coupon_text ?>" placeholder="<?php echo $this->coupon_text; ?>" />
 		</div>
-        <button class="btn btn-primary details-button button" type="submit" name="setcoupon" title="<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?>"  ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+        <!-- <button class="btn btn-primary details-button button" type="submit" name="setcoupon" title="<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?>"  ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button> -->
 	</div>
 	<?php
 	if ($this->layoutName!='default') {

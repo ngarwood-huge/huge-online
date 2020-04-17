@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ($js);
 ?>
-
+<!-- TEMPLATE: templates/theme569/html/com_virtuemart/category/default.php -->
 <div class="page category-view">
 
 	<?php if (!empty($this->keyword)) { ?>
@@ -211,6 +211,10 @@ if (!empty($this->products)) {	?>
 			<div class="product item item_product <?php if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ){ echo 'sale';} ?>	" style="<?php echo $Browsecellwidth; ?>">
 				<div class="product_wrap">
 
+                        <h4 class="item_name product_title">
+                            <?php echo JHTML::link ($product->link, $product->product_name); ?>
+                        </h4>
+
 						<?php
 						 if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ): ?>							
 							<span class="product_sale-label label label-success"><?php echo JText::_('TM_VMTHEME_SALE') ?></span>
@@ -223,10 +227,6 @@ if (!empty($this->products)) {	?>
 						</div>
 
 						<div class="product_content">
-
-							<h4 class="item_name product_title">
-								<?php echo JHTML::link ($product->link, $product->product_name); ?>
-							</h4>
 
 							<div class="product_rating ratingbox">
 								<?php // Output: Average Product Rating

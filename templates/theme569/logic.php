@@ -12,6 +12,13 @@ $tpath = $this->baseurl.'/templates/'.$this->template;
 $templateparams	= $app->getTemplate(true)->params;
 $option = JRequest::getString('option', null);
 $view = JRequest::getString('view', null);
+$homePage = true ;
+$uri = $_SERVER['REQUEST_URI'] ;
+if ($uri != '/index.php' && $uri != '/' ) {
+    $homePage = false;
+}
+$startPos = strrpos($uri,'/',0) + 1;
+$page = substr($uri, $startPos) ;
 
 // parameter
 $logo = $this->params->get('logo');
@@ -125,11 +132,13 @@ $variables = array (
     'ACTIVE' => $active,
     'TEMPLATE' => $tpath,
     'TEMPLATE PARAMS' => $templateparams,
-    'VIEW' => $view
+    'VIEW' => $view,
+    'URI' => $_SERVER['REQUEST_URI']
 );
 
 $contents = print_r($variables, true);
 $logFile = '/home/hp3-linc7-nfs1-x/304/1810304/user/htdocs/landingPage.log';
+
 
 file_put_contents($logFile, $contents . PHP_EOL);
 

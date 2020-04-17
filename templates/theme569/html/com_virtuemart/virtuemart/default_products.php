@@ -53,6 +53,12 @@
 							<div class="item item__product product"  <?php if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ){ echo 'sale';} ?> style="<?php echo $cellwidth; ?>">
 								<div class="product_wrap">
 
+                                    <h3 class="item_name product_title">
+                                        <?php // Product Name
+                                            echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id, FALSE ), $product->product_name, array ('title' => $product->product_name ) );
+                                        ?>
+                                    </h3>
+
 									<?php
 									 if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ): ?>							
 										<span class="product_sale-label label label-success"><?php echo JText::_('TM_VMTHEME_SALE') ?></span>
@@ -70,10 +76,7 @@
 										<?php } ?>
 									</div>
 
-									<h3 class="item_name product_title">
-										<?php // Product Name
-										echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id, FALSE ), $product->product_name, array ('title' => $product->product_name ) ); ?>
-									</h3>
+
 
 									<div class="product_price" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 										<?php

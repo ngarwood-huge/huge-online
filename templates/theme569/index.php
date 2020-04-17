@@ -1,5 +1,5 @@
 <?php defined( '_JEXEC' ) or die; ?>
-
+<?php define("TEMPLATEPATH", "/home/hp3-linc7-nfs1-x/304/1810304/user/htdocs/templates/theme569/"); ?>
 <!DOCTYPE html>
 <!--[if IEMobile]><html class="iemobile" lang="<?php echo $this->language; ?>"> <![endif]-->
 <!--[if IE 8]> <html class="no-js ie8" lang="<?php echo $this->language; ?>"> <![endif]-->
@@ -8,6 +8,8 @@
 <head>
 
   <?php include_once JPATH_THEMES.'/'.$this->template.'/logic.php'; // load logic.php ?>
+    <?php echo "<!-- URI: $uri , PAGE: " . $page ." -->"; ?>
+
   <script type="text/javascript" src="<?php echo $tpath ?>/js/jquery.min.js"></script>
   <script type="text/javascript" src="<?php echo $tpath ?>/js/jquery-migrate.min.js"></script>
   <jdoc:include type="head" />
@@ -124,7 +126,8 @@
                         <div class="showcase">
                               <jdoc:include type="modules" name="showcase" style="vmNotitle"/>
                               <?php if ($this->countModules( 'galerific' ) && ($view !=='search')): ?>
-                             <div id="galerific-banner">
+                              <div class="clearfix"></div>
+                              <div id="galerific-banner">
                                <div class="container">
                                     <jdoc:include type="modules" name="galerific" style="vmBasic"/>
                                 </div>
@@ -153,7 +156,8 @@
                     </div>
                   </div>
                 </div>
-                <?php endif; ?>
+         <?php endif; ?>
+
    		 <?php if ($this->countModules( 'video-top' ) && ($view !=='search')): ?>
              <div id="video-top-un" class="video-section">
                <div class="container">
@@ -209,7 +213,7 @@
                                 <div class="col-md-<?php echo $content_width; ?>">
                                  <jdoc:include type="modules" name="breadcrumbs" style="vmNotitle"/>
 
-                                    <?php if ($this->countModules( 'content-top' ) && ($view !=='search')): ?>
+                                    <?php if ($this->countModules( 'content-top' ) && ($view !=='search') && $homePage): ?>
                                         <!-- Top content -->
                                         <div class="top-content">
                                             <jdoc:include type="modules" name="content-top" style="vmBasic"/>
@@ -218,10 +222,29 @@
             
                                     <!-- Main content area -->
                                     <div class="main-content">
-                                    <?php if(count($app->getMessageQueue())): ?>
-                                        <jdoc:include type="message" />
-                                    <?php endif; ?>
-                                    <jdoc:include type="component" />
+                                        <?php if(count($app->getMessageQueue())): ?>
+                                            <jdoc:include type="message" />
+                                        <?php endif; ?>
+                                        <jdoc:include type="component" />
+
+                                        <?php if($homePage || $page == 'huge-tv') :  ?>
+                                            <!-- H.U.G.E TV -->
+                                            <div class="module_header">
+                                                <h3 class="module_title">H.U.G.E TV</h3>
+                                            </div>
+                                            <script src="https://apps.elfsight.com/p/platform.js" defer></script>
+                                            <div class="elfsight-app-e54d2c58-6ce4-4f71-bf85-1f2c2d58e7e0"></div>
+                                        <?php endif; ?>
+                                        <?php
+                                            if($homePage) {
+                                                /* Start Product Categories */
+                                                include_once JPATH_THEMES.'/'.$this->template.'/product_categories_tmpl.php';
+
+                                                /* About Us Video */
+                                                /*include_once JPATH_THEMES.'/'.$this->template.'/video_promo_tmpl.php';*/
+                                            }
+                                        ?>
+                                        <!-- End Product Categories -->
                                     </div>
         
                                     <?php if ($this->countModules( 'content-bottom' )&& ($view !=='search')): ?>
@@ -331,53 +354,91 @@
 		<?php endif; ?>
         <!-- Footer row -->
      <?php if ($this->countModules( 'footer-a' ) || $this->countModules( 'footer-b' ) || $this->countModules( 'footer-c' ) || $this->countModules( 'footer-d' ) || $this->countModules( 'copyright' )): ?>
-        <div class="footer-row">
-          <div class="container">
-            <div class="footer">
-              <div class="row">
-                <?php if ($this->countModules( 'footer-a' )): ?>
-                  <div class="col-md-4 col-lg-4 col-sm-4">
-                    <jdoc:include type="modules" name="footer-a" style="vmBasic"/>
-                  </div>
-                <?php endif; ?>
-              <?php /*?>  <?php if ($this->countModules( 'footer-c' )): ?>
-                  <div class="col-md-3 col-lg-3 col-sm-4">
-                    <jdoc:include type="modules" name="footer-c" style="vmBasic"/>
-                  </div>
-                <?php endif; ?><?php */?>
-                 <?php if ($this->countModules( 'footer-b' )): ?>
-                  <div class="col-md-4 col-lg-4 col-sm-4">
-                    <jdoc:include type="modules" name="footer-b" style="vmBasic"/>
-                  </div>
-                <?php endif; ?>
-                 <?php if ($this->countModules( 'footer-c' )): ?>
-                  <div class="col-md-4 col-lg-4 col-sm-4">
-                    <jdoc:include type="modules" name="footer-c" style="vmBasic"/>
-                  </div>
-                <?php endif; ?>
-                </div>
-                </div>
-                </div>
-          
-        </div>
-          <?php endif; ?> 
-        <!-- Copyright row -->
-        <div class="copyright-row">
-          <div class="container">
-            <?php if ($this->countModules( 'copyright' )): ?>
-              <div class="copyright">
-                 <jdoc:include type="modules" name="copyright" style="vmNotitle"/>
-              </div>   
-             <?php endif; ?>
-          </div>
-        </div>
-    </div>
+        <!-- START NEW FOOTER -->
+         <!--   FOOTER START================== -->
+        <!-- <div class="footer-row"> <!-- original footer container -->
+         <footer class="footer">
+             <div class="container">
+                 <div class="row">
+                     <div class="col-sm-3">
+                         <h4 class="title">Sumi</h4>
+                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin suscipit, libero a molestie consectetur, sapien elit lacinia mi.</p>
+                         <ul class="social-icon">
+                             <a href="#" class="social"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                             <a href="#" class="social"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                             <a href="#" class="social"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                             <a href="#" class="social"><i class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                             <a href="#" class="social"><i class="fa fa-google" aria-hidden="true"></i></a>
+                             <a href="#" class="social"><i class="fa fa-dribbble" aria-hidden="true"></i></a>
+                         </ul>
+                     </div>
+                     <div class="col-sm-3">
+                         <h4 class="title">My Account</h4>
+                         <span class="acount-icon">
+                            <a href="#"><i class="fa fa-heart" aria-hidden="true"></i> Wish List</a>
+                            <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i> Cart</a>
+                            <a href="#"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
+                            <a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Language</a>
+                         </span>
+                     </div>
+                     <div class="col-sm-3">
+                         <h4 class="title">Customer Service</h4>
+                         <span class="acount-icon">
+                            <a href="/index.php/16-privacy-policy">Privacy Policy</a>
+                            <a href="/index.php/20-terms-and-conditions">Terms and Conditions</a>
+                            <a href="#"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
+                            <a href="#"><i class="fa fa-globe" aria-hidden="true"></i> Language</a>
+                         </span>
+                         <!--
+                         <h4 class="title">Category</h4>
+                         <div class="category">
+                             <a href="#">men</a>
+                             <a href="#">women</a>
+                             <a href="#">boy</a>
+                             <a href="#">girl</a>
+                             <a href="#">bag</a>
+                             <a href="#">teshart</a>
+                             <a href="#">top</a>
+                             <a href="#">shos</a>
+                             <a href="#">glass</a>
+                             <a href="#">kit</a>
+                             <a href="#">baby dress</a>
+                             <a href="#">kurti</a>
+                         </div>
+                          -->
+                     </div>
+                     <div class="col-sm-3">
+                         <h4 class="title">Payment Methods</h4>
+                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                         <ul class="payment">
+                             <li><a href="#"><i class="fa fa-cc-amex" aria-hidden="true"></i></a></li>
+                             <li><a href="#"><i class="fa fa-credit-card" aria-hidden="true"></i></a></li>
+                             <li><a href="#"><i class="fa fa-paypal" aria-hidden="true"></i></a></li>
+                             <li><a href="#"><i class="fa fa-cc-visa" aria-hidden="true"></i></a></li>
+                         </ul>
+                     </div>
+                 </div>
+                 <hr>
+                 <?php if ($this->countModules( 'copyright' )): ?>
+                 <div class="row text-center"><jdoc:include type="modules" name="copyright" style="vmNotitle"/>.</div>
+                 <?php endif; ?>
+             </div>
+
+
+         </footer>
+
+
+
+            <!-- END NEW FOOTER -->
+        <!-- </div> -->
+        <?php endif; ?>
     <div id="totopscroller"></div>
     <div class="chat-position">
         <jdoc:include type="modules" name="chat" style="vmBasic"/>
     </div>
     <jdoc:include type="modules" name="debug" />
-    
+
+
     <script type="text/javascript" src="<?php echo $tpath ?>/js/jquery.ui.core.min.js"></script>
     <script type="text/javascript" src="<?php echo $tpath ?>/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo $tpath ?>/js/tm-stick-up.js"></script>
@@ -388,6 +449,14 @@
     	<script type="text/javascript" src="<?php echo $tpath ?>/js/animate/wow.js"></script>
     <?php } ?>
     <script type="text/javascript" src="<?php echo $tpath ?>/js/scripts.js"></script>
+    <script type="text/javascript" src="https://use.fontawesome.com/07b0ce5d10.js"></script>
+
+    <?php if ( $menu->getActive() == $menu->getDefault() ) : ?>
+        <script type="text/javascript" src="<?php echo $tpath ?>/js/form-validator.min.js"></script>
+        <script type="text/javascript" src="<?php echo $tpath ?>/js/postcode-form-script.js"></script>
+        <script type="text/javascript" src="<?php echo $tpath ?>/js/search-form-script.js"></script>
+    <?php endif; ?>
+
 
 </body>
 </html>

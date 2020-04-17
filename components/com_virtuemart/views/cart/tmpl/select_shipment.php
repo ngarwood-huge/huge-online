@@ -41,13 +41,13 @@ defined('_JEXEC') or die('Restricted access');
 
 	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
 
-	?>
 
+	?>
 	<div class="buttonBar-right">
 
-	        <button  name="updatecart" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
+	       <!--  <button  name="updatecart" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE_DELIVERY_METHOD'); ?></button>  &nbsp; -->
 		<?php   if ($this->layoutName!='default') { ?>
-		<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+		<!-- <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button> -->
 		<?php  } ?>
 	</div>
 

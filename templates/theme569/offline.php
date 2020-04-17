@@ -28,19 +28,20 @@ $doc->addStyleSheet($tpath.'/css/offline.css?v=1');
 
 <body>
   <jdoc:include type="message" />
-  <div id="frame" class="outline">
-    <?php if ($app->getCfg('offline_image')) : ?>
-      <img src="<?php echo $app->getCfg('offline_image'); ?>" alt="<?php echo $app->getCfg('sitename'); ?>" />
-    <?php endif; ?>
+  <br id="frame" class="outline">
+
+      <img src="<?php echo $tpath; ?>/images/offline_logo.jpg" alt="<?php echo $app->getCfg('sitename'); ?>" style="width:1000px" /></br>
+      <img src="<?php echo $tpath; ?>/images/coming-soon-handwritten.jpg" alt="coming soon" style="width: 1000px" />
+
     <h1>
-      <?php echo htmlspecialchars($app->getCfg('sitename')); ?>
+      <!-- <?php echo htmlspecialchars($app->getCfg('sitename')); ?> -->
     </h1>
     <?php if ($app->getCfg('display_offline_message', 1) == 1 && str_replace(' ', '', $app->getCfg('offline_message')) != ''): ?>
-		<p><?php echo $app->getCfg('offline_message'); ?></p>
+		<h3><?php echo $app->getCfg('offline_message'); ?></h3>
     <?php elseif ($app->getCfg('display_offline_message', 1) == 2 && str_replace(' ', '', JText::_('JOFFLINE_MESSAGE')) != ''): ?>
-		<p><?php echo JText::_('JOFFLINE_MESSAGE'); ?></p>
+		<h3><?php echo JText::_('JOFFLINE_MESSAGE'); ?></h3>
 	<?php endif; ?>
-    <form action="<?php echo JRoute::_('index.php', true); ?>" method="post" name="login" id="form-login">
+    <form action="<?php echo JRoute::_('index.php', true); ?>" method="post" name="login" id="form-login" style="width: 300px">
       <fieldset class="input">
         <p id="form-login-username">
           <label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?></label><br />

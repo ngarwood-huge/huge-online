@@ -9,7 +9,7 @@ $col= 1 ;
 
 $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 ?>
-
+<!-- TEMPLATE: modules/mod_virtuemart_product/tmpl/galerific2.php -->
 <div id="slider" class="vm-products <?php echo $params->get ('moduleclass_sfx') ? 'vm-products__' . $params->get ('moduleclass_sfx') : '' ?>">
 
 	<!-- Header text -->

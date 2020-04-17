@@ -14,10 +14,11 @@ img {
 #frame {
 	margin: 20px auto;
 	padding: 20px;
-	width: 400px;
+	width: 1000px;
 }
 #frame form {
 	text-align: left;
+	width: 400px;
 }
 .outline {
 	background: #fff;

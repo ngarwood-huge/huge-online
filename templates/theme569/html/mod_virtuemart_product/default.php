@@ -37,7 +37,15 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 						<div class="product item item_product <?php if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ){ echo 'sale';} ?>"  style="<?php echo $pwidth; ?>">
 
 							<div class="product_wrap">
-							<?php
+
+                                <h4 class="item_name product_title">
+                                    <?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
+                                        $product->virtuemart_category_id); ?>
+
+                                    <a href="<?php echo $url ?>"><?php echo $product->product_name; ?></a>
+                                </h4>
+
+                                <?php
 								 if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ): ?>							
                                     <span class="product_sale-label label label-success"><?php echo JText::_('TM_VMTHEME_SALE') ?></span>
                                 <?php endif; ?>
@@ -68,12 +76,6 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 									
 								} ?>
 								</div>
-								<h4 class="item_name product_title">
-									<?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
-										$product->virtuemart_category_id); ?>
-
-									<a href="<?php echo $url ?>"><?php echo shopFunctionsF::limitStringByWord($product->product_name,'40', '...'); ?></a> 
-								</h4>  
                                <?php /*?> <div class="product_description">
 									<?php echo shopFunctionsF::limitStringByWord($product->product_s_desc, '60', '...') ?>
                                 </div><?php */?>
@@ -118,7 +120,13 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 				$i = 0;
 				foreach ($products as $product) : ?>
 				<li class="item item__product <?php echo $float ?>" style="<?php echo $pwidth ?>">
-					<div class="item_image product_image">
+                    <h4 class="item_name product_title">
+                        <?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
+                            $product->virtuemart_category_id); ?>
+
+                        <a href="<?php echo $url ?>"><?php echo $product->product_name ?></a>
+                    </h4>
+                    <div class="item_image product_image">
 						<?php 
 						if (!empty($product->images[0])) {
 							$image = $product->images[0]->displayMediaThumb ('class="featuredProductImage"', FALSE);
@@ -142,12 +150,7 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 							}
 						} ?>
 					</div>
-					<h4 class="item_name product_title">
-						<?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
-							$product->virtuemart_category_id); ?>
 
-						<a href="<?php echo $url ?>"><?php echo $product->product_name ?></a> 
-					</h4>  
 					<div class="product_addtocart">
 						<?php 
 						if ($show_addtocart) {

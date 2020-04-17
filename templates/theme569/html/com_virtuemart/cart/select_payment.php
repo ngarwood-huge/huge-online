@@ -64,7 +64,7 @@ if ($this->layoutName!='default') {
     } ?>
 </div>
 <div class="control-button">
-	<button name="updatecart" class="btn btn-primary default button <?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+	<button name="updatecart" class="btn btn-primary default button <?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE_PAYMENT_METHOD'); ?></button>
 		<?php if ($this->layoutName!='default') { ?>
 			<button class="btn btn-default  button <?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart&task=cancel'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 		<?php } ?>

@@ -41,6 +41,7 @@ JHTML::_('behavior.modal');
 $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 
 ?>
+<!-- TEMPLATE: templates/theme569/html/com_virtuemart/productdetails/default.php -->
 <div class="page productdetails-view productdetails">
 	<div class="page_heading product_heading">	   
 

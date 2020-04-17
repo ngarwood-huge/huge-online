@@ -43,7 +43,7 @@ JHTML::script( 'modules/mod_virtuemart_product/js/jquery.flexslider-min.js' );
 <?php 
 $last = count($products)-1;
 ?>
-
+<!-- TEMPLATE: templates/theme569/html/mod_virtuemart_product/galerific2.php -->
  <li>
   <?php foreach ($products as $product) : ?>
 			<?php

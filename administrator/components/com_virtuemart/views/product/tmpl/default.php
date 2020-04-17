@@ -81,7 +81,8 @@ if(empty($imgWidth)) $imgWidth = 80;
                 <?php } ?>
                 <th width="80px" ><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_PARENT_LIST_CHILDREN'); ?></th>
                 <th style="min-width:<?php echo $imgWidth ?>px;width:5%;"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
-		<th><?php echo $this->sort('product_sku') ?></th>
+		<!-- <th><?php echo $this->sort('product_sku') ?></th> -->
+        <th>Description</th>
 		<th width="90px" ><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?></th>
 <?php /*		<th><?php echo JHtml::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
 <th width="15%"><?php echo vmText::_( 'COM_VIRTUEMART_CATEGORY'); ?></th>
@@ -165,7 +166,11 @@ if(empty($imgWidth)) $imgWidth = 80;
 					?>
 					</td>
 				<!-- Product SKU -->
-				<td><?php echo $product->product_sku; ?></td>
+				<!-- <td><?php echo $product->product_sku; ?></td> -->
+
+                <!-- Description-->
+                <td><?php echo substr($product->product_desc,0, strpos($product->product_desc,'.')).'...'; ?></td>
+
 				<!-- Product price -->
 				<td align="right" ><?php
 					if(isset($product->product_price_display)) {

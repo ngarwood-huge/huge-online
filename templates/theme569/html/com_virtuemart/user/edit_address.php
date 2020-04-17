@@ -177,7 +177,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);?>
 			else {
 				?>
 				<button class="<?php echo $buttonclass ?>" type="submit"
-				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
+				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE_ADDRESS_DETAILS'); ?></button>
 				<button class="button default btn btn-default reset" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
 				<?php } ?>

@@ -426,7 +426,7 @@ h2 {
   font-weight: bold;
 }
 a {
-  color: #e0199e;
+  color: #6B58CD;
   outline: none;
   -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
@@ -1333,7 +1333,7 @@ table {
   .slicknav_nav li.active > span,
   .slicknav_nav li.current > span {
     background: #333333;
-    color: #e0199e;
+    color: #6B58CD;
   }
   .slicknav_nav li:hover > a a,
   .slicknav_nav li.sfHover > a a,
@@ -1343,13 +1343,13 @@ table {
   .slicknav_nav li.sfHover > span a,
   .slicknav_nav li.active > span a,
   .slicknav_nav li.current > span a {
-    color: #e0199e;
+    color: #6B58CD;
   }
   .slicknav_nav li:hover .arrowdown,
   .slicknav_nav li.sfHover .arrowdown,
   .slicknav_nav li.active .arrowdown,
   .slicknav_nav li.current .arrowdown {
-    color: #e0199e;
+    color: #6B58CD;
   }
   .slicknav_nav ul {
     padding: 0px 0 0 0.5em!important;
@@ -2058,6 +2058,8 @@ table {
     padding-left: 0px;
   }
 }
+
+/*
 .footer-row .mod_custom .txt1 {
   display: block;
   font-size: 12px;
@@ -2081,7 +2083,7 @@ table {
   display: block;
   font-size: 14px;
   line-height: 42px;
-  color: #e0199e;
+  color: #6B58CD;
   text-transform: none;
 }
 .footer-row .custom_store span em {
@@ -2105,6 +2107,9 @@ table {
   text-decoration: none;
   color: #fff;
 }
+
+*/
+
 .bottom {
   padding: 0 0;
 }
@@ -2156,6 +2161,48 @@ table {
 .footer.footer_additional {
   padding-top: 0;
 }
+
+/* NEW FOOTER - 10/02/2020
+=========================================================*/
+/*FOOTER START///////////////////*/
+
+.footer {
+  padding: 50px 0 20px 0;
+  background-color: #35404f;
+  color: #878c94;
+}
+.footer .title{text-align: left;color:#fff;font-size:25px;}
+
+
+.footer .social-icon{padding:0px;margin:0px;}
+.footer .social-icon a{display:inline-block;color:#fff;font-size:25px;padding:5px;}
+.footer .acount-icon a{display:block;color:#fff;font-size:18px;padding:5px;text-decoration:none;}
+.footer .acount-icon .fa{margin-right:25px;}
+
+
+.footer .category a {
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 20px;
+  margin: 1px;
+  border-radius:4px;
+  margin-top: 6px;
+  background-color: black;
+  border: solid 1px #fff;
+}
+
+.footer .payment{margin:0px;padding:0px;list-style-type:none}
+.footer .payment li{list-style-type:none}
+.footer .payment li a {
+  text-decoration: none;
+  display: inline-block;
+  color: #fff;
+  float: left;
+  font-size: 25px;
+  padding: 10px 10px;
+}
+
 /* copyright
 ========================================================*/
 .copyright-row {
@@ -2260,7 +2307,7 @@ table {
   text-align: left;
 }
 .footer .mod_acymailing .module_content .acymailing_introtext {
-  color: #e0199e;
+  color: #6B58CD;
   padding-bottom: 15px!important;
 }
 /* Social media links */
@@ -3145,7 +3192,7 @@ div.calendar table {
   z-index: 2;
   background: #a40975;
   background: rgba(164, 9, 117, 0.8);
-  position: absolute;
+  /*position: absolute;*/
   left: 0;
   bottom: 0;
   width: 100%;
@@ -3244,8 +3291,8 @@ div.calendar table {
   transition: all 0.3s ease-in;
 }
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li .txt1 {
-  font-size: 56px;
-  line-height: 58px;
+  font-size: 28px;
+  line-height: 30px;
   color: #fff;
   padding: 20px 10px 0 10px;
   font-weight: bold;
@@ -3283,7 +3330,7 @@ div.calendar table {
 }
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li .txt1 i {
   font-style: normal;
-  color: #e0199e;
+  color: #6B58CD;
 }
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li .txt1 span {
   display: block;
@@ -3397,7 +3444,7 @@ div.calendar table {
   }
 }
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li:hover .txt3 {
-  background: #e0199e;
+  background: #6B58CD;
 }
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li:hover .txt1,
 #galerific-banner .mod_bannersblock.moduletable__content_first ul li:hover .txt2 {
@@ -4059,7 +4106,7 @@ div.calendar table {
   padding: 130px 0;
 }
 #parallax-top-un2 .line1 {
-  color: #e0199e;
+  color: #6B58CD;
   font-size: 123px;
   line-height: 126px;
   text-transform: uppercase;
@@ -4177,7 +4224,7 @@ div.calendar table {
   font-weight: bold;
 }
 #custom-html .newsflash .wrap-column .newsflash-title a:hover {
-  color: #e0199e;
+  color: #6B58CD;
 }
 #custom-html .newsflash .wrap-column .article_image {
   background: #000;
@@ -4194,7 +4241,7 @@ div.calendar table {
 #custom-html .newsflash .wrap-column .home_article_published span,
 #custom-html .newsflash .wrap-column .home_article_category span,
 #custom-html .newsflash .wrap-column .home_article_hits span {
-  color: #e0199e;
+  color: #6B58CD;
 }
 #custom-html .newsflash .wrap-column .readmore {
   margin-top: 20px;

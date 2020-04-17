@@ -123,6 +123,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$ext_id = 'extension_id';
 
 		$whereString = '';
+
 		$select = ' * FROM `#__virtuemart_shipmentmethods_'.VmConfig::$vmlang.'` as l ';
 		$joinedTables = ' JOIN `#__virtuemart_shipmentmethods`   USING (`virtuemart_shipmentmethod_id`) ';
 		$datas =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
@@ -137,7 +138,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$data->virtuemart_shoppergroup_ids = $db->loadColumn();
 			}
 		}
-		return $datas;
+
+        return $datas;
 	}
 
 

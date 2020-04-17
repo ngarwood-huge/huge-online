@@ -9,7 +9,7 @@ $col= 1 ;
 
 $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 ?>
-
+<!-- TEMPLATE: templates/theme569/html/mod_virtuemart_product/single.php -->
 <div id="slider" class="vm-products <?php echo $params->get ('moduleclass_sfx') ? 'vm-products__' . $params->get ('moduleclass_sfx') : '' ?>">
 
 	<!-- Header text -->
@@ -37,11 +37,18 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 						<div class="product item item_product <?php if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ){ echo 'sale';} ?>	" style="<?php echo $pwidth; ?>">
 
 							<div class="product_wrap">
-								<?php
+                                <h4 class="item_name product_title">
+                                    <?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
+                                        $product->virtuemart_category_id); ?>
+
+                                    <a href="<?php echo $url ?>"><?php echo $product->product_name; ?></a>
+                                </h4>
+                                <?php
 								
 								 if (abs($product->prices['discountAmount']) > 0 && ($product->prices['salesPrice'] < $product->prices['salesPriceWithDiscount'] ) ): ?>							
                                     <span class="product_sale-label label label-success"><?php echo JText::_('TM_VMTHEME_SALE') ?></span>
                                 <?php endif; ?>
+
 								<div class="item_image product_image">
 									<?php 
 									if (!empty($product->images[0])) {
@@ -53,13 +60,6 @@ $pwidth = ' width:' . floor (100 / $products_per_row) . '%';
 									echo JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id), $image, array('title' => $product->product_name));
 									?>
 								</div>
-								
-								<h4 class="item_name product_title">
-									<?php $url = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' .
-										$product->virtuemart_category_id); ?>
-
-									<a href="<?php echo $url ?>"><?php echo shopFunctionsF::limitStringByWord($product->product_name,'30', '...'); ?></a> 
-								</h4>  
                             <div class="product_price">     
 
 								<?php 

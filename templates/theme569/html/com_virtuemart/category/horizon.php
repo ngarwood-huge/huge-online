@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ($js);
 ?>
-
+<!-- TEMPLATE: templates/theme569/html/com_virtuemart/category/horizon.php -->
 <div class="page category-view">
 
 	<?php if (!empty($this->keyword)) { ?>
