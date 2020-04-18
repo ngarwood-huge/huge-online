@@ -120,12 +120,12 @@
                     </div>     
                     <?php endif; ?>
                  </div> 
-                 <?php if (($this->countModules( 'showcase' ) || $this->countModules( 'galerific' ))&& ($view !=='search')): ?>
+                 <?php if ( ($this->countModules( 'showcase' ) || $this->countModules( 'galerific' )) && ($view !=='search') && true == $homePage): ?>
                 <!-- Showcase row -->
                     <div class="showcase-row">
                         <div class="showcase">
                               <jdoc:include type="modules" name="showcase" style="vmNotitle"/>
-                              <?php if ($this->countModules( 'galerific' ) && ($view !=='search')): ?>
+                              <?php if ($this->countModules( 'galerific' ) && ($view !=='search')  && true == $homePage): ?>
                               <div class="clearfix"></div>
                               <div id="galerific-banner">
                                <div class="container">
@@ -247,7 +247,7 @@
                                         <!-- End Product Categories -->
                                     </div>
         
-                                    <?php if ($this->countModules( 'content-bottom' )&& ($view !=='search')): ?>
+                                    <?php if ($this->countModules( 'content-bottom' )&& ($view !=='search') && true == $homePage): ?>
                                         <!-- bottom content -->
                                         <div class="bottom-content">
                                             <jdoc:include type="modules" name="content-bottom" style="vmBasic"/>
