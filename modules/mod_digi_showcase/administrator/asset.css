@@ -1,0 +1,59 @@
+/**
+ * 
+ * @version             See field version manifest file
+ * @package             See field name manifest file
+ * @author				Gregorio Nuti
+ * @copyright			See field copyright manifest file
+ * @license             GNU General Public License version 2 or later
+ * 
+ */
+ 
+label.hidden,
+label[id*=hidden] {
+    display: none;
+}
+.label.px,
+.label.percent,
+.label.seconds,
+.label.milliseconds {
+    margin-left: 10px !important;
+}
+.label-danger {
+    background-color: #ad312b !important;
+}
+.system-message {
+    max-width: 675px;
+}
+.btn-group.ever-on .btn.active.blue {
+    background-color: #1d6cb0;
+    border-color: #15497c #15497c #0a223b;
+}
+.btn-group.ever-on .btn.active.green {
+    background-color: #378137;
+    border-color: #378137 #378137 #204b20;
+}
+.btn-group.beta .btn.active.yellow {
+    background-color: #c67605;
+    border-color: #c67605 #c67605 #7c4a03;
+}
+.share-me + .share-me {
+	 margin-top: 5px;
+}
+.spacer .title label {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+}
+@media (min-width: 768px) {
+	.extended-textarea,
+	.input-extended-textarea {
+		width: 97%;
+	}
+}
+@media (max-width: 767px) {
+	.share-me,
+	.share-me .share-me {
+		 margin-top: 5px;
+		 margin-bottom: 10px;
+	}
+}

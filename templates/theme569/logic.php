@@ -138,9 +138,7 @@ $variables = array (
 
 $contents = print_r($variables, true);
 $logFile = '/home/hp3-linc7-nfs1-x/304/1810304/user/htdocs/landingPage.log';
-
-
-file_put_contents($logFile, $contents . PHP_EOL);
+//file_put_contents($logFile, $contents . PHP_EOL);
 
 
 
