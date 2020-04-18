@@ -370,6 +370,7 @@ table {
     width: 1200px!important;
   }
 }
+
 h1,
 h2,
 h3,
@@ -380,7 +381,7 @@ h4 {
   color: #2a2a2a;
   text-transform: none;
   line-height: 50px;
-  font-size: 43px;
+  font-size: 30px;
   padding: 20px 0;
   background: none;
   font-weight: 400;
