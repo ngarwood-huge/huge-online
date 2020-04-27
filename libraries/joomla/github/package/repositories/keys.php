@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,11 +12,10 @@ defined('JPATH_PLATFORM') or die;
 /**
  * GitHub API Forks class for the Joomla Platform.
  *
- * @documentation http://developer.github.com/v3/repos/keys
+ * @documentation https://developer.github.com/v3/repos/keys
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub.Repositories
- * @since       11.3
+ * @since       1.7.3
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
 class JGithubPackageRepositoriesKeys extends JGithubPackage
 {
@@ -26,7 +25,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string  $owner  The name of the owner of the GitHub repository.
 	 * @param   string  $repo   The name of the GitHub repository.
 	 *
-	 * @since 12.4
+	 * @since 3.3.0
 	 *
 	 * @return object
 	 */
@@ -47,7 +46,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the key.
 	 *
-	 * @since 12.4
+	 * @since 3.3.0
 	 *
 	 * @return object
 	 */
@@ -69,7 +68,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string  $title  The key title.
 	 * @param   string  $key    The key.
 	 *
-	 * @since 12.4
+	 * @since 3.3.0
 	 *
 	 * @return object
 	 */
@@ -80,7 +79,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 
 		$data = array(
 			'title' => $title,
-			'key'   => $key
+			'key'   => $key,
 		);
 
 		return $this->processResponse(
@@ -98,7 +97,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $title  The key title.
 	 * @param   string   $key    The key.
 	 *
-	 * @since 12.4
+	 * @since 3.3.0
 	 *
 	 * @return object
 	 */
@@ -109,7 +108,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 
 		$data = array(
 			'title' => $title,
-			'key'   => $key
+			'key'   => $key,
 		);
 
 		return $this->processResponse(
@@ -124,7 +123,7 @@ class JGithubPackageRepositoriesKeys extends JGithubPackage
 	 * @param   string   $repo   The name of the GitHub repository.
 	 * @param   integer  $id     The id of the key.
 	 *
-	 * @since 12.4
+	 * @since 3.3.0
 	 *
 	 * @return boolean
 	 */

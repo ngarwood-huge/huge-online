@@ -1,20 +1,18 @@
 <?php
 /**
- * @package     Joomla.Libraries
- * @subpackage  Controller
+ * @package     Joomla.Site
+ * @subpackage  com_config
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
 
 /**
  * Cancel Controller for Admin
  *
- * @package     Joomla.Libraries
- * @subpackage  com_config
- * @since       3.2
+ * @since  3.2
  */
 class ConfigControllerCanceladmin extends ConfigControllerCancel
 {
@@ -55,7 +53,7 @@ class ConfigControllerCanceladmin extends ConfigControllerCancel
 		// Check for request forgeries.
 		if (!JSession::checkToken())
 		{
-			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN'));
+			$this->app->enqueueMessage(JText::_('JINVALID_TOKEN_NOTICE'));
 			$this->app->redirect('index.php');
 		}
 
@@ -69,6 +67,12 @@ class ConfigControllerCanceladmin extends ConfigControllerCancel
 
 		if (!empty($this->redirect))
 		{
+			// Don't redirect to an external URL.
+			if (!JUri::isInternal($this->redirect))
+			{
+				$this->redirect = JUri::base();
+			}
+
 			$this->app->redirect($this->redirect);
 		}
 		else

@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,11 +12,10 @@ defined('JPATH_PLATFORM') or die;
 /**
  * GitHub API References class for the Joomla Platform.
  *
- * @documentation http://developer.github.com/v3/git/refs/
+ * @documentation https://developer.github.com/v3/git/refs/
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub.Data
- * @since       11.3
+ * @since       1.7.3
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
 class JGithubPackageDataRefs extends JGithubPackage
 {
@@ -29,7 +28,7 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function get($user, $repo, $ref)
 	{
@@ -61,7 +60,7 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 *
 	 * @return  array
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function getList($user, $repo, $namespace = '', $page = 0, $limit = 0)
 	{
@@ -91,7 +90,7 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 * @param   string  $sha   The SHA1 value to set this reference to.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */
@@ -104,7 +103,7 @@ class JGithubPackageDataRefs extends JGithubPackage
 		$data = json_encode(
 			array(
 				'ref' => $ref,
-				'sha' => $sha
+				'sha' => $sha,
 			)
 		);
 
@@ -132,7 +131,7 @@ class JGithubPackageDataRefs extends JGithubPackage
 	 * @param   boolean  $force  Whether the update should be forced. Default to false.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */

@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_wrapper
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Content Component Controller
  *
- * @package     Joomla.Site
- * @subpackage  com_wrapper
- * @since       1.5
+ * @since  1.5
  */
 class WrapperController extends JControllerLegacy
 {
@@ -22,7 +20,7 @@ class WrapperController extends JControllerLegacy
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JControllerLegacy  This object to support chaining.
 	 *

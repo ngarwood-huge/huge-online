@@ -3,7 +3,7 @@
  * @package     Joomla.Plugin
  * @subpackage  Content.joomla
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Example Content Plugin
  *
- * @package     Joomla.Plugin
- * @subpackage  Content.joomla
- * @since       1.6
+ * @since  1.6
  */
 class PlgContentJoomla extends JPlugin
 {
@@ -27,7 +25,7 @@ class PlgContentJoomla extends JPlugin
 	 * @param   object   $article  A JTableContent object
 	 * @param   boolean  $isNew    If the content is just about to be created
 	 *
-	 * @return  boolean   true if function not enabled, is in front-end or is new. Else true or
+	 * @return  boolean   true if function not enabled, is in frontend or is new. Else true or
 	 *                    false depending on success of save function.
 	 *
 	 * @since   1.6
@@ -35,7 +33,7 @@ class PlgContentJoomla extends JPlugin
 	public function onContentAfterSave($context, $article, $isNew)
 	{
 		// Check we are handling the frontend edit form.
-		if ($context != 'com_content.form')
+		if ($context !== 'com_content.form')
 		{
 			return true;
 		}
@@ -56,7 +54,8 @@ class PlgContentJoomla extends JPlugin
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__users'))
-			->where($db->quoteName('sendEmail') . ' = 1');
+			->where($db->quoteName('sendEmail') . ' = 1')
+			->where($db->quoteName('block') . ' = 0');
 		$db->setQuery($query);
 		$users = (array) $db->loadColumn();
 
@@ -73,6 +72,7 @@ class PlgContentJoomla extends JPlugin
 
 		$default_language = JComponentHelper::getParams('com_languages')->get('administrator');
 		$debug = JFactory::getConfig()->get('debug_lang');
+		$result = true;
 
 		foreach ($users as $user_id)
 		{
@@ -108,7 +108,7 @@ class PlgContentJoomla extends JPlugin
 	public function onContentBeforeDelete($context, $data)
 	{
 		// Skip plugin if we are deleting something other than categories
-		if ($context != 'com_categories.category')
+		if ($context !== 'com_categories.category')
 		{
 			return true;
 		}
@@ -151,8 +151,8 @@ class PlgContentJoomla extends JPlugin
 				// Show error if items are found in the category
 				if ($count > 0)
 				{
-					$msg = JText::sprintf('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
-						JText::plural('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
+					$msg = JText::sprintf('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'))
+						. JText::plural('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
 					JError::raiseWarning(403, $msg);
 					$result = false;
 				}
@@ -168,8 +168,8 @@ class PlgContentJoomla extends JPlugin
 					}
 					elseif ($count > 0)
 					{
-						$msg = JText::sprintf('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) .
-							JText::plural('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
+						$msg = JText::sprintf('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'))
+							. JText::plural('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
 						JError::raiseWarning(403, $msg);
 						$result = false;
 					}
@@ -298,5 +298,41 @@ class PlgContentJoomla extends JPlugin
 		$cctable->publish($ccIds, $value);
 
 		return true;
+	}
+
+	/**
+	* The save event.
+	*
+	* @param   string   $context  The context
+	* @param   object   $table    The item
+	* @param   boolean  $isNew    Is new item
+	*
+	* @return  void
+	*
+	* @since   3.9.12
+	*/
+	public function onContentBeforeSave($context, $table, $isNew)
+	{
+		// Check we are handling the frontend edit form.
+		if ($context !== 'com_menus.item')
+		{
+			return true;
+		}
+
+		// Special case for Create article menu item
+		if ($table->link !== 'index.php?option=com_content&view=form&layout=edit')
+		{
+			return true;
+		}
+
+		// Display error if catid is not set when enable_category is enabled
+		$params = json_decode($table->params, true);
+
+		if ($params['enable_category'] == 1 && empty($params['catid']))
+		{
+			$table->setError(JText::_('COM_CONTENT_CREATE_ARTICLE_ERROR'));
+
+			return false;
+		}
 	}
 }

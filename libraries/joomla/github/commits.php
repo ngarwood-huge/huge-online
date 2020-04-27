@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,9 +12,8 @@ defined('JPATH_PLATFORM') or die;
 /**
  * GitHub API Commits class for the Joomla Platform.
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub
- * @since       12.1
+ * @since       3.0.0
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
 class JGithubCommits extends JGithubObject
 {
@@ -34,7 +33,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  object
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function create($user, $repo, $message, $tree, array $parents = array())
 	{
@@ -74,7 +73,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  object
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function createCommitComment($user, $repo, $sha, $comment, $line, $filepath, $position)
 	{
@@ -87,7 +86,7 @@ class JGithubCommits extends JGithubObject
 				'commit_id' => $sha,
 				'line' => (int) $line,
 				'path' => $filepath,
-				'position' => (int) $position
+				'position' => (int) $position,
 			)
 		);
 
@@ -116,7 +115,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  object
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function deleteCommitComment($user, $repo, $id)
 	{
@@ -149,7 +148,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  object
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function editCommitComment($user, $repo, $id, $comment)
 	{
@@ -158,7 +157,7 @@ class JGithubCommits extends JGithubObject
 
 		$data = json_encode(
 			array(
-				'body' => $comment
+				'body' => $comment,
 			)
 		);
 
@@ -189,7 +188,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getCommit($user, $repo, $sha, $page = 0, $limit = 0)
 	{
@@ -221,7 +220,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getCommitComment($user, $repo, $id)
 	{
@@ -255,7 +254,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getCommitComments($user, $repo, $sha, $page = 0, $limit = 0)
 	{
@@ -288,7 +287,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getDiff($user, $repo, $base, $head)
 	{
@@ -321,7 +320,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getList($user, $repo, $page = 0, $limit = 0)
 	{
@@ -354,7 +353,7 @@ class JGithubCommits extends JGithubObject
 	 *
 	 * @return  array
 	 *
-	 * @since   12.1
+	 * @since   3.0.0
 	 */
 	public function getListComments($user, $repo, $page = 0, $limit = 0)
 	{
