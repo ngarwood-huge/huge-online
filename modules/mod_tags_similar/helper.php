@@ -1,29 +1,31 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  mod_tags_popular
+ * @subpackage  mod_tags_similar
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
+JLoader::register('TagsHelperRoute', JPATH_BASE . '/components/com_tags/helpers/route.php');
+
 /**
- * Helper for mod_tags_popular
+ * Helper for mod_tags_similar
  *
- * @package     Joomla.Site
- * @subpackage  mod_tags_popular
- * @since       3.1
+ * @since  3.1
  */
 abstract class ModTagssimilarHelper
 {
 	/**
 	 * Get a list of tags
 	 *
-	 * @param   JRegistry  &$params  Module parameters
+	 * @param   Registry  &$params  Module parameters
 	 *
-	 * @return  mixed                Results array / null
+	 * @return  array
 	 */
 	public static function getList(&$params)
 	{
@@ -33,9 +35,9 @@ abstract class ModTagssimilarHelper
 
 		// For now assume com_tags and com_users do not have tags.
 		// This module does not apply to list views in general at this point.
-		if ($option == 'com_tags' || $view == 'category' || $option == 'com_users')
+		if ($option === 'com_tags' || $view === 'category' || $option === 'com_users')
 		{
-			return;
+			return array();
 		}
 
 		$db         = JFactory::getDbo();
@@ -43,36 +45,37 @@ abstract class ModTagssimilarHelper
 		$groups     = implode(',', $user->getAuthorisedViewLevels());
 		$matchtype  = $params->get('matchtype', 'all');
 		$maximum    = $params->get('maximum', 5);
+		$ordering   = $params->get('ordering', 'count');
 		$tagsHelper = new JHelperTags;
 		$prefix     = $option . '.' . $view;
 		$id         = $app->input->getInt('id');
+		$now        = JFactory::getDate()->toSql();
+		$nullDate   = $db->getNullDate();
 
 		$tagsToMatch = $tagsHelper->getTagIds($id, $prefix);
 
-		if (!$tagsToMatch || is_null($tagsToMatch))
+		if (!$tagsToMatch || $tagsToMatch === null)
 		{
-			return;
+			return array();
 		}
 
 		$tagCount = substr_count($tagsToMatch, ',') + 1;
 
 		$query = $db->getQuery(true)
 			->select(
-			array(
-				$db->quoteName('m.tag_id'),
-				$db->quoteName('m.core_content_id'),
-				$db->quoteName('m.content_item_id'),
-				$db->quoteName('m.type_alias'),
+				array(
+					$db->quoteName('m.core_content_id'),
+					$db->quoteName('m.content_item_id'),
+					$db->quoteName('m.type_alias'),
 					'COUNT( ' . $db->quoteName('tag_id') . ') AS ' . $db->quoteName('count'),
-				$db->quoteName('t.access'),
-				$db->quoteName('t.id'),
-				$db->quoteName('ct.router'),
-				$db->quoteName('cc.core_title'),
-				$db->quoteName('cc.core_alias'),
-				$db->quoteName('cc.core_catid'),
-				$db->quoteName('cc.core_language')
+					$db->quoteName('ct.router'),
+					$db->quoteName('cc.core_title'),
+					$db->quoteName('cc.core_alias'),
+					$db->quoteName('cc.core_catid'),
+					$db->quoteName('cc.core_language'),
+					$db->quoteName('cc.core_params'),
 				)
-		);
+			);
 
 		$query->from($db->quoteName('#__contentitem_tag_map', 'm'));
 
@@ -85,17 +88,25 @@ abstract class ModTagssimilarHelper
 		$query->where('(cc.core_access IN (' . $groups . ') OR cc.core_access = 0)');
 
 		// Don't show current item
-		$query->where('(' . $db->quoteName('m.content_item_id') . ' <> ' . $id . ' OR ' . $db->quoteName('m.type_alias') . ' <> ' . $db->quote($prefix) . ')');
+		$query->where('(' . $db->quoteName('m.content_item_id') . ' <> ' . $id
+			. ' OR ' . $db->quoteName('m.type_alias') . ' <> ' . $db->quote($prefix) . ')'
+		);
 
 		// Only return published tags
-		$query->where($db->quoteName('cc.core_state') . ' = 1 ');
+		$query->where($db->quoteName('cc.core_state') . ' = 1 ')
+			->where('(' . $db->quoteName('cc.core_publish_up') . '=' . $db->quote($nullDate) . ' OR '
+				. $db->quoteName('cc.core_publish_up') . '<=' . $db->quote($now) . ')'
+			)
+			->where('(' . $db->quoteName('cc.core_publish_down') . '=' . $db->quote($nullDate) . ' OR '
+				. $db->quoteName('cc.core_publish_down') . '>=' . $db->quote($now) . ')'
+			);
 
 		// Optionally filter on language
 		$language = JComponentHelper::getParams('com_tags')->get('tag_list_language_filter', 'all');
 
-		if ($language != 'all')
+		if ($language !== 'all')
 		{
-			if ($language == 'current_language')
+			if ($language === 'current_language')
 			{
 				$language = JHelperContent::getCurrentLanguage();
 			}
@@ -103,27 +114,57 @@ abstract class ModTagssimilarHelper
 			$query->where($db->quoteName('cc.core_language') . ' IN (' . $db->quote($language) . ', ' . $db->quote('*') . ')');
 		}
 
-		$query->group($db->quoteName(array('m.core_content_id')));
+		$query->group(
+			$db->quoteName(
+				array('m.core_content_id', 'm.content_item_id', 'm.type_alias', 'ct.router', 'cc.core_title',
+				'cc.core_alias', 'cc.core_catid', 'cc.core_language', 'cc.core_params')
+			)
+		);
 
-		if ($matchtype == 'all' && $tagCount > 0)
+		if ($matchtype === 'all' && $tagCount > 0)
 		{
 			$query->having('COUNT( ' . $db->quoteName('tag_id') . ')  = ' . $tagCount);
 		}
-		elseif ($matchtype == 'half' && $tagCount > 0)
+		elseif ($matchtype === 'half' && $tagCount > 0)
 		{
 			$tagCountHalf = ceil($tagCount / 2);
 			$query->having('COUNT( ' . $db->quoteName('tag_id') . ')  >= ' . $tagCountHalf);
 		}
 
-		$query->order($db->quoteName('count') . ' DESC');
+		if ($ordering === 'count' || $ordering === 'countrandom')
+		{
+			$query->order($db->quoteName('count') . ' DESC');
+		}
+
+		if ($ordering === 'random' || $ordering === 'countrandom')
+		{
+			$query->order($query->Rand());
+		}
+
 		$db->setQuery($query, 0, $maximum);
-		$results = $db->loadObjectList();
+
+		try
+		{
+			$results = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			$results = array();
+			JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+		}
 
 		foreach ($results as $result)
 		{
-			$explodedAlias = explode('.', $result->type_alias);
-			$result->link = 'index.php?option=' . $explodedAlias[0] . '&view=' . $explodedAlias[1]
-				. '&id=' . $result->content_item_id . '-' . $result->core_alias;
+			$result->link = TagsHelperRoute::getItemRoute(
+				$result->content_item_id,
+				$result->core_alias,
+				$result->core_catid,
+				$result->core_language,
+				$result->type_alias,
+				$result->router
+			);
+
+			$result->core_params = new Registry($result->core_params);
 		}
 
 		return $results;

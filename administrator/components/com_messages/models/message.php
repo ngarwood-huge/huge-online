@@ -3,18 +3,18 @@
  * @package     Joomla.Administrator
  * @subpackage  com_messages
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Router\Route;
+
 /**
  * Private Message model.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_messages
- * @since       1.6
+ * @since  1.6
  */
 class MessagesModelMessage extends JModelAdmin
 {
@@ -26,7 +26,13 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * @note    Calling getState in this method will result in recursion.
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */
@@ -49,7 +55,7 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Check that recipient user is the one trying to delete and then call parent delete method
 	 *
-	 * @param   array    &$pks  An array of record primary keys.
+	 * @param   array  &$pks  An array of record primary keys.
 	 *
 	 * @return  boolean  True if successful, false if an error occurs.
 	 *
@@ -66,11 +72,19 @@ class MessagesModelMessage extends JModelAdmin
 		{
 			if ($table->load($pk))
 			{
-				if ($table->user_id_to !== $user->id)
+				if ($table->user_id_to != $user->id)
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+					try
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+					}
+					catch (RuntimeException $exception)
+					{
+						JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 'warning');
+					}
 
 					return false;
 				}
@@ -89,14 +103,14 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string  A prefix for the table class name. Optional.
-	 * @param   array   Configuration array for model. Optional.
+	 * @param   type    $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  JTable  A database object
 	 *
 	 * @since   1.6
-	*/
+	 */
 	public function getTable($type = 'Message', $prefix = 'MessagesTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
@@ -105,7 +119,7 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Method to get a single record.
 	 *
-	 * @param   integer  The id of the primary key.
+	 * @param   integer  $pk  The id of the primary key.
 	 *
 	 * @return  mixed    Object on success, false on failure.
 	 *
@@ -181,9 +195,9 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param   array   $data       Data for the form.
-	 * @param   boolean $loadData   True if the form is to load its own data (default case), false if not.
-	 * 
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
 	 * @return  JForm   A JForm object on success, false on failure
 	 *
 	 * @since   1.6
@@ -246,16 +260,23 @@ class MessagesModelMessage extends JModelAdmin
 
 			if ($table->load($pk))
 			{
-				if ($table->user_id_to !== $user->id)
+				if ($table->user_id_to != $user->id)
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+
+					try
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+					}
+					catch (RuntimeException $exception)
+					{
+						JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'warning');
+					}
 
 					return false;
 				}
 			}
-
 		}
 
 		return parent::publish($pks, $value);
@@ -264,9 +285,11 @@ class MessagesModelMessage extends JModelAdmin
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param   array    The form data.
+	 * @param   array  $data  The form data.
 	 *
 	 * @return  boolean  True on success.
+	 *
+	 * @since   1.6
 	 */
 	public function save($data)
 	{
@@ -285,6 +308,7 @@ class MessagesModelMessage extends JModelAdmin
 		{
 			$table->user_id_from = JFactory::getUser()->get('id');
 		}
+
 		if ((int) $table->date_time == 0)
 		{
 			$table->date_time = JFactory::getDate()->toSql();
@@ -313,6 +337,7 @@ class MessagesModelMessage extends JModelAdmin
 		if ($config->get('locked', false))
 		{
 			$this->setError(JText::_('COM_MESSAGES_ERR_SEND_FAILED'));
+
 			return false;
 		}
 
@@ -335,15 +360,151 @@ class MessagesModelMessage extends JModelAdmin
 			$lang->load('com_messages', JPATH_ADMINISTRATOR);
 
 			// Build the email subject and message
-			$sitename = JFactory::getApplication()->get('sitename');
-			$siteURL  = JUri::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
-			$subject  = sprintf($lang->_('COM_MESSAGES_NEW_MESSAGE_ARRIVED'), $sitename);
-			$msg      = sprintf($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
+			$app      = JFactory::getApplication();
+			$linkMode = $app->get('force_ssl', 0) >= 1 ? Route::TLS_FORCE : Route::TLS_IGNORE;
+			$sitename = $app->get('sitename');
+			$fromName = $fromUser->get('name');
+			$siteURL  = JRoute::link('administrator', 'index.php?option=com_messages&view=message&message_id=' . $table->message_id, false, $linkMode, true);
+			$subject  = html_entity_decode($table->subject, ENT_COMPAT, 'UTF-8');
+			$message  = strip_tags(html_entity_decode($table->message, ENT_COMPAT, 'UTF-8'));
+
+			$subj	  = sprintf($lang->_('COM_MESSAGES_NEW_MESSAGE'), $fromName, $sitename);
+			$msg 	  = $subject . "\n\n" . $message . "\n\n" . sprintf($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
 
 			// Send the email
-			JFactory::getMailer()->sendMail($fromUser->email, $fromUser->name, $toUser->email, $subject, $msg);
+			$mailer = JFactory::getMailer();
+
+			if (!$mailer->addReplyTo($fromUser->email, $fromUser->name))
+			{
+				try
+				{
+					JLog::add(JText::_('COM_MESSAGES_ERROR_COULD_NOT_SEND_INVALID_REPLYTO'), JLog::WARNING, 'jerror');
+				}
+				catch (RuntimeException $exception)
+				{
+					JFactory::getApplication()->enqueueMessage(JText::_('COM_MESSAGES_ERROR_COULD_NOT_SEND_INVALID_REPLYTO'), 'warning');
+				}
+
+				// The message is still saved in the database, we do not allow this failure to cause the entire save routine to fail
+				return true;
+			}
+
+			if (!$mailer->addRecipient($toUser->email, $toUser->name))
+			{
+				try
+				{
+					JLog::add(JText::_('COM_MESSAGES_ERROR_COULD_NOT_SEND_INVALID_RECIPIENT'), JLog::WARNING, 'jerror');
+				}
+				catch (RuntimeException $exception)
+				{
+					JFactory::getApplication()->enqueueMessage(JText::_('COM_MESSAGES_ERROR_COULD_NOT_SEND_INVALID_RECIPIENT'), 'warning');
+				}
+
+				// The message is still saved in the database, we do not allow this failure to cause the entire save routine to fail
+				return true;
+			}
+
+			$mailer->setSubject($subj);
+			$mailer->setBody($msg);
+
+			// The Send method will raise an error via JError on a failure, we do not need to check it ourselves here
+			$mailer->Send();
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sends a message to the site's super users
+	 *
+	 * @param   string  $subject  The message subject
+	 * @param   string  $message  The message
+	 *
+	 * @return  boolean
+	 *
+	 * @since   3.9.0
+	 */
+	public function notifySuperUsers($subject, $message, $fromUser = null)
+	{
+		$db = $this->getDbo();
+
+		try
+		{
+			/** @var JTableAsset $table */
+			$table  = $this->getTable('Asset', 'JTable');
+			$rootId = $table->getRootId();
+
+			/** @var JAccessRule[] $rules */
+			$rules     = JAccess::getAssetRules($rootId)->getData();
+			$rawGroups = $rules['core.admin']->getData();
+
+			if (empty($rawGroups))
+			{
+				$this->setError(JText::_('COM_MESSAGES_ERROR_MISSING_ROOT_ASSET_GROUPS'));
+
+				return false;
+			}
+
+			$groups = array();
+
+			foreach ($rawGroups as $g => $enabled)
+			{
+				if ($enabled)
+				{
+					$groups[] = $db->quote($g);
+				}
+			}
+
+			if (empty($groups))
+			{
+				$this->setError(JText::_('COM_MESSAGES_ERROR_NO_GROUPS_SET_AS_SUPER_USER'));
+
+				return false;
+			}
+
+			$query = $db->getQuery(true)
+				->select($db->quoteName('map.user_id'))
+				->from($db->quoteName('#__user_usergroup_map', 'map'))
+				->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('map.user_id'))
+				->where($db->quoteName('map.group_id') . ' IN(' . implode(',', $groups) . ')')
+				->where($db->quoteName('u.block') . ' = 0')
+				->where($db->quoteName('u.sendEmail') . ' = 1');
+
+			$userIDs = $db->setQuery($query)->loadColumn(0);
+
+			if (empty($userIDs))
+			{
+				$this->setError(JText::_('COM_MESSAGES_ERROR_NO_USERS_SET_AS_SUPER_USER'));
+
+				return false;
+			}
+
+			foreach ($userIDs as $id)
+			{
+				/*
+				 * All messages must have a valid from user, we have use cases where an unauthenticated user may trigger this
+				 * so we will set the from user as the to user
+				 */
+				$data = array(
+					'user_id_from' => $id,
+					'user_id_to'   => $id,
+					'subject'      => $subject,
+					'message'      => $message,
+				);
+
+				if (!$this->save($data))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+		catch (Exception $exception)
+		{
+			$this->setError($exception->getMessage());
+
+			return false;
+		}
 	}
 }

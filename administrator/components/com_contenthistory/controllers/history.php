@@ -3,18 +3,18 @@
  * @package     Joomla.Administrator
  * @subpackage  com_contenthistory
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Contenthistory list controller class.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_contenthistory
- * @since       3.2
+ * @since  3.2
  */
 class ContenthistoryControllerHistory extends JControllerAdmin
 {
@@ -27,7 +27,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 	 */
 	public function delete()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$this->checkToken();
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', array(), 'array');
@@ -42,8 +42,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			$cid = ArrayHelper::toInteger($cid);
 
 			// Remove the items.
 			if ($model->delete($cid))
@@ -90,7 +89,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 	 */
 	public function keep()
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		$this->checkToken();
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', array(), 'array');
@@ -105,8 +104,7 @@ class ContenthistoryControllerHistory extends JControllerAdmin
 			$model = $this->getModel();
 
 			// Make sure the item ids are integers
-			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			$cid = ArrayHelper::toInteger($cid);
 
 			// Remove the items.
 			if ($model->keep($cid))

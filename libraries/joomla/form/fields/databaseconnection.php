@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Form
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -16,10 +16,8 @@ JFormHelper::loadFieldClass('list');
  * Provides a list of available database connections, optionally limiting to
  * a given list.
  *
- * @package     Joomla.Platform
- * @subpackage  Form
- * @see         JDatabaseDriver
- * @since       11.3
+ * @see    JDatabaseDriver
+ * @since  1.7.3
  */
 class JFormFieldDatabaseConnection extends JFormFieldList
 {
@@ -27,7 +25,7 @@ class JFormFieldDatabaseConnection extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  11.3
+	 * @since  1.7.3
 	 */
 	protected $type = 'DatabaseConnection';
 
@@ -39,7 +37,7 @@ class JFormFieldDatabaseConnection extends JFormFieldList
 	 *
 	 * @return  array  The field option objects.
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 * @see     JDatabaseDriver::getConnectors()
 	 */
 	protected function getOptions()

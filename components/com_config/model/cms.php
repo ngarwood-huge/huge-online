@@ -3,18 +3,18 @@
  * @package     Joomla.Site
  * @subpackage  com_config
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
+
+use Joomla\Registry\Registry;
 
 /**
  * Prototype admin model.
  *
- * @package     Joomla.Site
- * @subpackage  com_config
- * @since       3.2
+ * @since  3.2
  */
 abstract class ConfigModelCms extends JModelDatabase
 {
@@ -93,7 +93,7 @@ abstract class ConfigModelCms extends JModelDatabase
 		}
 		else
 		{
-			$this->state = new JRegistry;
+			$this->state = new Registry;
 		}
 
 		// Set the model dbo
@@ -121,7 +121,7 @@ abstract class ConfigModelCms extends JModelDatabase
 			$this->event_clean_cache = 'onContentCleanCache';
 		}
 
-		$state = new JRegistry($config);
+		$state = new Registry($config);
 
 		parent::__construct($state);
 	}
@@ -218,8 +218,8 @@ abstract class ConfigModelCms extends JModelDatabase
 		$dispatcher = JEventDispatcher::getInstance();
 
 		$options = array(
-			'defaultgroup' => ($group) ? $group : (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),
-			'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
+			'defaultgroup' => $group ?: (isset($this->option) ? $this->option : JFactory::getApplication()->input->get('option')),
+			'cachebase' => $client_id ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache'));
 
 		$cache = JCache::getInstance('callback', $options);
 		$cache->clean();
@@ -256,32 +256,25 @@ abstract class ConfigModelCms extends JModelDatabase
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id))
+		if (empty($record->id) || $record->published != -2)
 		{
-			if ($record->published != -2)
-			{
-				return;
-			}
-
-			$user = JFactory::getUser();
-
-			return $user->authorise('core.delete', $this->option);
+			return false;
 		}
+
+		return JFactory::getUser()->authorise('core.delete', $this->option);
 	}
 
-	/**
-	 * Method to test whether a record can have its state changed.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 *
-	 * @since   3.2
-	 */
-	protected function canEditState($record)
-	{
-		$user = JFactory::getUser();
-
-		return $user->authorise('core.edit.state', $this->option);
+	/**	
+	 * Method to test whether a record can have its state changed.	
+	 *	
+	 * @param   object  $record  A record object.	
+	 *	
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.	
+	 *	
+	 * @since   3.2	
+	 */	
+	protected function canEditState($record)	
+	{	
+		return JFactory::getUser()->authorise('core.edit.state', $this->option);	
 	}
 }

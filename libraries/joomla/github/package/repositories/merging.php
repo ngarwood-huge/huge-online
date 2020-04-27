@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,11 +12,10 @@ defined('JPATH_PLATFORM') or die;
 /**
  * GitHub API Repositories Merging class for the Joomla Platform.
  *
- * @documentation http://developer.github.com/v3/repos/merging
+ * @documentation https://developer.github.com/v3/repos/merging
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub.Repositories
- * @since       11.3
+ * @since       1.7.3
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
 class JGithubPackageRepositoriesMerging extends JGithubPackage
 {
@@ -31,7 +30,7 @@ class JGithubPackageRepositoriesMerging extends JGithubPackage
 	 *                                   If omitted, a default message will be used.
 	 *
 	 * @throws UnexpectedValueException
-	 * @since   12.4
+	 * @since   3.3.0
 	 *
 	 * @return  boolean
 	 */

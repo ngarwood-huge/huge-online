@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -12,11 +12,10 @@ defined('JPATH_PLATFORM') or die;
 /**
  * GitHub API Gists class for the Joomla Platform.
  *
- * @documentation http://developer.github.com/v3/gists
+ * @documentation https://developer.github.com/v3/gists
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub.Gists
- * @since       11.3
+ * @since       1.7.3
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  *
  * @property-read  JGithubPackageGistsComments  $comments  GitHub API object for gist comments.
  */
@@ -25,7 +24,7 @@ class JGithubPackageGists extends JGithubPackage
 	protected $name = 'Gists';
 
 	protected $packages = array(
-		'comments'
+		'comments',
 	);
 
 	/**
@@ -36,7 +35,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   string   $description  The optional description of the gist.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */
@@ -50,7 +49,7 @@ class JGithubPackageGists extends JGithubPackage
 			array(
 				'files' => $this->buildFileData((array) $files),
 				'public' => (bool) $public,
-				'description' => $description
+				'description' => $description,
 			)
 		);
 
@@ -74,7 +73,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  void
 	 */
@@ -104,7 +103,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   string   $description  The description of the gist.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */
@@ -157,7 +156,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */
@@ -187,7 +186,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  object
 	 */
@@ -218,7 +217,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $limit  The number of items on a page.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  array
 	 */
@@ -249,7 +248,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $limit  The number of items on a page.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  array
 	 */
@@ -279,7 +278,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $limit  The number of items on a page.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  array
 	 */
@@ -309,7 +308,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $limit  The number of items on a page.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  array
 	 */
@@ -338,7 +337,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  boolean  True if the gist is starred.
 	 */
@@ -373,7 +372,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  void
 	 */
@@ -400,7 +399,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   integer  $gistId  The gist number.
 	 *
 	 * @throws DomainException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  void
 	 */
@@ -428,7 +427,7 @@ class JGithubPackageGists extends JGithubPackage
 	 * @param   array  $files  The list of file paths or filenames and content.
 	 *
 	 * @throws InvalidArgumentException
-	 * @since   11.3
+	 * @since   1.7.3
 	 *
 	 * @return  array
 	 */
@@ -473,7 +472,7 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since      11.3
+	 * @since      1.7.3
 	 */
 	public function createComment($gistId, $body)
 	{
@@ -489,7 +488,7 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @return  void
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function deleteComment($commentId)
 	{
@@ -506,7 +505,7 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function editComment($commentId, $body)
 	{
@@ -522,7 +521,7 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @return  object
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function getComment($commentId)
 	{
@@ -540,7 +539,7 @@ class JGithubPackageGists extends JGithubPackage
 	 *
 	 * @return  array
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function getComments($gistId, $page = 0, $limit = 0)
 	{

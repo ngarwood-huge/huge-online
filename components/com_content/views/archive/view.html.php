@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_content
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * HTML View class for the Content component
  *
- * @package     Joomla.Site
- * @subpackage  com_content
- * @since       1.5
+ * @since  1.5
  */
 class ContentViewArchive extends JViewLegacy
 {
@@ -26,31 +24,37 @@ class ContentViewArchive extends JViewLegacy
 
 	protected $pagination = null;
 
+	protected $years = null;
+
 	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
+	 * @return  mixed  A string if successful, otherwise an Error object.
 	 */
 	public function display($tpl = null)
 	{
-		$user		= JFactory::getUser();
+		$user       = JFactory::getUser();
+		$state      = $this->get('State');
+		$items      = $this->get('Items');
+		$pagination = $this->get('Pagination');
 
-		$state 		= $this->get('State');
-		$items 		= $this->get('Items');
-		$pagination	= $this->get('Pagination');
+		// Flag indicates to not add limitstart=0 to URL
+		$pagination->hideEmptyLimitstart = true;
 
 		// Get the page/component configuration
 		$params = &$state->params;
 
+		JPluginHelper::importPlugin('content');
+
 		foreach ($items as $item)
 		{
-			$item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
-			$item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
+			$item->catslug     = $item->category_alias ? ($item->catid . ':' . $item->category_alias) : $item->catid;
+			$item->parent_slug = $item->parent_alias ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
 
 			// No link for ROOT category
-			if ($item->parent_alias == 'root')
+			if ($item->parent_alias === 'root')
 			{
 				$item->parent_slug = null;
 			}
@@ -65,7 +69,6 @@ class ContentViewArchive extends JViewLegacy
 				$item->text = $item->introtext;
 			}
 
-			JPluginHelper::importPlugin('content');
 			$dispatcher->trigger('onContentPrepare', array ('com_content.archive', &$item, &$item->params, 0));
 
 			// Old plugins: Use processed text as introtext
@@ -82,18 +85,19 @@ class ContentViewArchive extends JViewLegacy
 		}
 
 		$form = new stdClass;
+
 		// Month Field
 		$months = array(
 			'' => JText::_('COM_CONTENT_MONTH'),
-			'01' => JText::_('JANUARY_SHORT'),
-			'02' => JText::_('FEBRUARY_SHORT'),
-			'03' => JText::_('MARCH_SHORT'),
-			'04' => JText::_('APRIL_SHORT'),
-			'05' => JText::_('MAY_SHORT'),
-			'06' => JText::_('JUNE_SHORT'),
-			'07' => JText::_('JULY_SHORT'),
-			'08' => JText::_('AUGUST_SHORT'),
-			'09' => JText::_('SEPTEMBER_SHORT'),
+			'1' => JText::_('JANUARY_SHORT'),
+			'2' => JText::_('FEBRUARY_SHORT'),
+			'3' => JText::_('MARCH_SHORT'),
+			'4' => JText::_('APRIL_SHORT'),
+			'5' => JText::_('MAY_SHORT'),
+			'6' => JText::_('JUNE_SHORT'),
+			'7' => JText::_('JULY_SHORT'),
+			'8' => JText::_('AUGUST_SHORT'),
+			'9' => JText::_('SEPTEMBER_SHORT'),
 			'10' => JText::_('OCTOBER_SHORT'),
 			'11' => JText::_('NOVEMBER_SHORT'),
 			'12' => JText::_('DECEMBER_SHORT')
@@ -108,13 +112,17 @@ class ContentViewArchive extends JViewLegacy
 				'option.key' => null
 			)
 		);
+
 		// Year Field
+		$this->years = $this->getModel()->getYears();
 		$years = array();
 		$years[] = JHtml::_('select.option', null, JText::_('JYEAR'));
-		for ($year = date('Y'), $i = $year - 10; $i <= $year; $i++)
+
+		for ($i = 0, $iMax = count($this->years); $i < $iMax; $i++)
 		{
-			$years[] = JHtml::_('select.option', $i, $i);
+			$years[] = JHtml::_('select.option', $this->years[$i], $this->years[$i]);
 		}
+
 		$form->yearField = JHtml::_(
 			'select.genericlist',
 			$years,
@@ -123,7 +131,7 @@ class ContentViewArchive extends JViewLegacy
 		);
 		$form->limitField = $pagination->getLimitBox();
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->filter     = $state->get('list.filter');
@@ -132,6 +140,8 @@ class ContentViewArchive extends JViewLegacy
 		$this->params     = &$params;
 		$this->user       = &$user;
 		$this->pagination = &$pagination;
+		$this->pagination->setAdditionalUrlParam('month', $state->get('filter.month'));
+		$this->pagination->setAdditionalUrlParam('year', $state->get('filter.year'));
 
 		$this->_prepareDocument();
 
@@ -140,6 +150,8 @@ class ContentViewArchive extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return  void
 	 */
 	protected function _prepareDocument()
 	{
@@ -150,6 +162,7 @@ class ContentViewArchive extends JViewLegacy
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
+
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));

@@ -3,11 +3,13 @@
  * @package     Joomla.Platform
  * @subpackage  GitHub
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('JPATH_PLATFORM') or die;
+
+use Joomla\Registry\Registry;
 
 /**
  * Joomla Platform class for interacting with a GitHub server instance.
@@ -34,21 +36,20 @@ defined('JPATH_PLATFORM') or die;
  * @property-read  JGithubHooks       $hooks       Deprecated GitHub API object for hooks.
  * @property-read  JGithubMeta        $meta        Deprecated GitHub API object for meta.
  *
- * @package     Joomla.Platform
- * @subpackage  GitHub
- * @since       11.3
+ * @since       1.7.3
+ * @deprecated  4.0  Use the `joomla/github` package via Composer instead
  */
 class JGithub
 {
 	/**
-	 * @var    JRegistry  Options for the GitHub object.
-	 * @since  11.3
+	 * @var    Registry  Options for the GitHub object.
+	 * @since  1.7.3
 	 */
 	protected $options;
 
 	/**
 	 * @var    JGithubHttp  The HTTP client object to use in sending HTTP requests.
-	 * @since  11.3
+	 * @since  1.7.3
 	 */
 	protected $client;
 
@@ -56,8 +57,19 @@ class JGithub
 	 * @var    array  List of known packages.
 	 * @since  3.3 (CMS)
 	 */
-	protected $packages = array('activity', 'authorization', 'data', 'gists', 'gitignore', 'issues',
-		'markdown', 'orgs', 'pulls', 'repositories', 'users');
+	protected $packages = array(
+		'activity',
+		'authorization',
+		'data',
+		'gists',
+		'gitignore',
+		'issues',
+		'markdown',
+		'orgs',
+		'pulls',
+		'repositories',
+		'users',
+	);
 
 	/**
 	 * @var    array  List of known legacy packages.
@@ -68,14 +80,14 @@ class JGithub
 	/**
 	 * Constructor.
 	 *
-	 * @param   JRegistry    $options  GitHub options object.
+	 * @param   Registry     $options  GitHub options object.
 	 * @param   JGithubHttp  $client   The HTTP client object.
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
-	public function __construct(JRegistry $options = null, JGithubHttp $client = null)
+	public function __construct(Registry $options = null, JGithubHttp $client = null)
 	{
-		$this->options = isset($options) ? $options : new JRegistry;
+		$this->options = isset($options) ? $options : new Registry;
 		$this->client  = isset($client) ? $client : new JGithubHttp($this->options);
 
 		// Setup the default API url if not already set.
@@ -89,7 +101,7 @@ class JGithub
 	 *
 	 * @throws RuntimeException
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 * @return  JGithubObject  GitHub API object (gists, issues, pulls, etc).
 	 */
 	public function __get($name)
@@ -129,7 +141,7 @@ class JGithub
 	 *
 	 * @return  mixed  The option value.
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function getOption($key)
 	{
@@ -144,7 +156,7 @@ class JGithub
 	 *
 	 * @return  JGitHub  This object for method chaining.
 	 *
-	 * @since   11.3
+	 * @since   1.7.3
 	 */
 	public function setOption($key, $value)
 	{

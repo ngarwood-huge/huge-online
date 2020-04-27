@@ -3,7 +3,7 @@
  * @package     Joomla.Platform
  * @subpackage  Form
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -15,10 +15,8 @@ JFormHelper::loadFieldClass('list');
  * Form Field class for the Joomla Platform.
  * Provides a list of available cache handlers
  *
- * @package     Joomla.Platform
- * @subpackage  Form
- * @see         JCache
- * @since       11.1
+ * @see    JCache
+ * @since  1.7.0
  */
 class JFormFieldCacheHandler extends JFormFieldList
 {
@@ -26,7 +24,7 @@ class JFormFieldCacheHandler extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  11.1
+	 * @since  1.7.0
 	 */
 	protected $type = 'CacheHandler';
 
@@ -35,7 +33,7 @@ class JFormFieldCacheHandler extends JFormFieldList
 	 *
 	 * @return  array  The field option objects.
 	 *
-	 * @since   11.1
+	 * @since   1.7.0
 	 */
 	protected function getOptions()
 	{

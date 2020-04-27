@@ -3,21 +3,21 @@
  * @package     Joomla.Site
  * @subpackage  com_config
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die;
+
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Prototype form model.
  *
- * @package     Joomla.Site
- * @subpackage  com_config
- * @see         JForm
- * @see         JFormField
- * @see         JFormRule
- * @since       3.2
+ * @see    JForm
+ * @see    JFormField
+ * @see    JFormRule
+ * @since  3.2
  */
 abstract class ConfigModelForm extends ConfigModelCms
 {
@@ -139,7 +139,7 @@ abstract class ConfigModelForm extends ConfigModelCms
 	protected function loadForm($name, $source = null, $options = array(), $clear = false, $xpath = false)
 	{
 		// Handle the optional arguments.
-		$options['control'] = JArrayHelper::getValue($options, 'control', false);
+		$options['control'] = ArrayHelper::getValue($options, 'control', false);
 
 		// Create a signature hash.
 		$hash = sha1($source . serialize($options));
@@ -153,6 +153,8 @@ abstract class ConfigModelForm extends ConfigModelCms
 		// Get the form.
 		// Register the paths for the form -- failing here
 		$paths = new SplPriorityQueue;
+		$paths->insert(JPATH_COMPONENT_ADMINISTRATOR . '/model/form', 'normal');
+		$paths->insert(JPATH_COMPONENT_ADMINISTRATOR . '/model/field', 'normal');
 		$paths->insert(JPATH_COMPONENT . '/model/form', 'normal');
 		$paths->insert(JPATH_COMPONENT . '/model/field', 'normal');
 		$paths->insert(JPATH_COMPONENT . '/model/rule', 'normal');
@@ -165,6 +167,8 @@ abstract class ConfigModelForm extends ConfigModelCms
 		// Solution until JForm supports splqueue
 		JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
 		JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+		JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/model/form');
+		JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/model/field');
 		JForm::addFormPath(JPATH_COMPONENT . '/model/form');
 		JForm::addFieldPath(JPATH_COMPONENT . '/model/field');
 
@@ -188,7 +192,6 @@ abstract class ConfigModelForm extends ConfigModelCms
 
 			// Load the data into the form after the plugins have operated.
 			$form->bind($data);
-
 		}
 		catch (Exception $e)
 		{
@@ -311,6 +314,11 @@ abstract class ConfigModelForm extends ConfigModelCms
 			// Get the validation messages from the form.
 			foreach ($form->getErrors() as $message)
 			{
+				if ($message instanceof Exception)
+				{
+					$message = $message->getMessage();
+				}
+
 				JFactory::getApplication()->enqueueMessage($message, 'error');
 			}
 

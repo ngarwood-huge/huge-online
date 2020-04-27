@@ -3,7 +3,7 @@
  * @package     Joomla.Libraries
  * @subpackage  Form
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2020 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -14,9 +14,7 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field to load a list of predefined values
  *
- * @package     Joomla.Libraries
- * @subpackage  Form
- * @since       3.2
+ * @since  3.2
  */
 abstract class JFormFieldPredefinedList extends JFormFieldList
 {
@@ -76,13 +74,15 @@ abstract class JFormFieldPredefinedList extends JFormFieldList
 
 			foreach ($this->predefinedOptions as $value => $text)
 			{
-				if (empty($filter) || in_array($value, $filter))
+				$val = (string) $value;
+	
+				if (empty($filter) || in_array($val, $filter, true))
 				{
 					$text = $this->translate ? JText::_($text) : $text;
 
 					$options[] = (object) array(
 						'value' => $value,
-						'text'  => $text
+						'text'  => $text,
 					);
 				}
 			}

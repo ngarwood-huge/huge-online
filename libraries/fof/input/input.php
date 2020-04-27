@@ -2,11 +2,30 @@
 /**
  * @package     FrameworkOnFramework
  * @subpackage  input
- * @copyright   Copyright (C) 2010 - 2014 Akeeba Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2010-2016 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @note        This file has been modified by the Joomla! Project and no longer reflects the original work of its author.
  */
 // Protect from unauthorized access
 defined('FOF_INCLUDED') or die;
+
+if (version_compare(JVERSION, '1.7.0', 'lt'))
+{
+	jimport('joomla.filter.input');
+	jimport('joomla.filter.filterinput');
+	jimport('joomla.base.object');
+
+	require_once __DIR__ . '/jinput/input.php';
+	require_once __DIR__ . '/jinput/cli.php';
+	require_once __DIR__ . '/jinput/cookie.php';
+	require_once __DIR__ . '/jinput/files.php';
+	require_once __DIR__ . '/jinput/json.php';
+}
+elseif (version_compare(JVERSION, '2.5.0', 'lt'))
+{
+	jimport('joomla.application.input');
+	jimport('joomla.input.input');
+}
 
 /**
  * FrameworkOnFramework input handling class. Extends upon the JInput class.
@@ -81,7 +100,7 @@ class FOFInput extends JInput
 
 		// Magic quotes GPC handling (something JInput simply can't handle at all)
 
-		if (($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('JRequest', true))
+		if (($hash == 'REQUEST') && PHP_VERSION_ID < 50400 && get_magic_quotes_gpc() && class_exists('JRequest', true))
 		{
 			$source = JRequest::get('REQUEST', 2);
 		}
