@@ -1,7 +1,8 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.1
+ * @version	5.6.1
+
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -976,9 +977,12 @@ class plgAcymailingTagcontent extends JPlugin
 				$pictVar = ($tag->type=='intro') ? 'image_intro' : 'image_fulltext';
 				$floatVar = ($tag->type=='intro') ? 'float_intro' : 'float_fulltext';
 				if(!empty($images->$pictVar)){
-					if($images->$floatVar != 'right') $images->$floatVar = 'left';
-					$style = 'float:'.$images->$floatVar.';padding-'.(($images->$floatVar == 'right') ? 'left':'right').':10px;padding-bottom:10px;';
-					if(!empty($tag->link) && empty($tag->nopictlink)) $picthtml .= '<a href="'.$link.'" style="text-decoration:none" >';
+					if($images->$floatVar != 'right'){
+						if(empty($tag->format)) $tag->format = 'TOP_LEFT';
+						$images->$floatVar = 'left';
+					}elseif(empty($tag->format)) $tag->format = 'TOP_RIGHT';
+					$style = 'float:'.$images->$floatVar.';padding-'.(($images->$floatVar == 'right') ? 'left' : 'right').':10px;padding-bottom:10px;';
+					if(!empty($tag->link) && empty($tag->nopictlink)) $picthtml .= '<a target="_blank" href="'.$link.'" style="text-decoration:none" >';
 					$alt = '';
 					$altVar = $pictVar.'_alt';
 					if(!empty($images->$altVar)) $alt = $images->$altVar;
@@ -1000,12 +1004,11 @@ class plgAcymailingTagcontent extends JPlugin
 				}catch(Exception $e){
 					$attachments = array();
 				}
-				if(!empty($attachments))
-				{
-					$result .= '<br />'.JText::_('ATTACHED_FILES').' :';
-					foreach($attachments as $oneAttachment)
-					{
-						$result .= '<br /><a href="'.$oneAttachment->url.'">'.(empty($oneAttachment->display_name) ? $oneAttachment->filename : $oneAttachment->display_name).'</a>';
+
+				if(!empty($attachments)){
+					$afterArticle .= '<br />'.JText::_('ATTACHED_FILES').' :';
+					foreach($attachments as $oneAttachment){
+						$afterArticle .= '<br /><a target="_blank" href="'.$oneAttachment->url.'">'.(empty($oneAttachment->display_name) ? $oneAttachment->filename : $oneAttachment->display_name).'</a>';
 					}
 				}
 			}
@@ -1056,7 +1059,19 @@ class plgAcymailingTagcontent extends JPlugin
 						array_push($links, '<a target="_blank" href="'.$linkShare.'" title="'.JText::sprintf('SOCIAL_SHARE', $altText).'"><img alt="' . $altText .'" src="' . $picSrc . '" /></a>');
 					}
 				}
-				$result .= '<br />' . (!empty($tag->sharetxt) ? $tag->sharetxt.' ':'') . implode(' ', $links);
+
+				$afterArticle .= '<br />'.(!empty($tag->sharetxt) ? $tag->sharetxt.' ' : '').implode(' ', $links);
+			}
+		}
+
+		if(!empty($tag->jtags) && version_compare(JVERSION, '3.1.0', '>=')){
+			$this->db->setQuery('SELECT t.id, t.alias, t.title FROM #__tags AS t JOIN #__contentitem_tag_map AS m ON t.id = m.tag_id WHERE t.published = 1 AND m.type_alias = "com_content.article" AND m.content_item_id = '.intval($tag->id));
+			$tags = $this->db->loadObjectList();
+			if(!empty($tags)){
+				$afterArticle .= '<br />';
+				foreach($tags as $oneTag){
+					$afterArticle .= ' <a target="_blank" href="index.php?option=com_tags&view=tag&id='.$oneTag->id.'-'.$oneTag->alias.'">'.$oneTag->title.'</a> ';
+				}
 			}
 
 			$result = '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td class="cat_'.@$article->catid.'" ><div class="acymailing_content" style="clear:both" >'.$result.'</div></td></tr></table>';
@@ -1077,10 +1092,26 @@ class plgAcymailingTagcontent extends JPlugin
 			}else{
 				$this->currentcatid = $article->catid;
 			}
-			if(!empty($tag->cattitlelink))
-				$result = '<h3 class="cattitle"><a href="index.php?option=com_content&view=category&id='.$this->currentcatid.'">'.$article->cattitle.'</a></h3>'.$result;
-			else
-				$result = '<h3 class="cattitle">'.$article->cattitle.'</h3>'.$result;
+
+			if(ACYMAILING_J16){
+				$params = json_decode($article->catparams);
+				$article->catpict = $params->image;
+			}
+
+			$resultTitle = $article->cattitle;
+
+			if(!empty($tag->catpict) && !empty($article->catpict)){
+				$style = '';
+				if(!empty($tag->catmaxwidth)) $style .= 'max-width:'.intval($tag->catmaxwidth).'px;';
+				if(!empty($tag->catmaxheight)) $style .= 'max-height:'.intval($tag->catmaxheight).'px;';
+				$resultTitle = '<img'.(empty($style) ? '' : ' style="'.$style.'"').' alt="" src="'.$article->catpict.'" />';
+				if(!empty($tag->cattitlelink)) $resultTitle = '<a target="_blank" href="index.php?option=com_content&view=category&id='.$this->currentcatid.'">'.$resultTitle.'</a>';
+			}else{
+				if(!empty($tag->cattitlelink)) $resultTitle = '<a target="_blank" href="index.php?option=com_content&view=category&id='.$this->currentcatid.'">'.$resultTitle.'</a>';
+				$resultTitle = '<h3 class="cattitle">'.$resultTitle.'</h3>';
+			}
+
+			$result = $resultTitle.$result;
 		}
 
 		if(file_exists(ACYMAILING_MEDIA.'plugins'.DS.'tagcontent_html.php')){

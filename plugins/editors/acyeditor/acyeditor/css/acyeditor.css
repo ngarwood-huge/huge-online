@@ -127,6 +127,9 @@ tr.acyeditor_delete:hover td.acyeditor_enedition .acyeditor_zoneeditionsuppressi
 	width: 100px;
 	height: 60px;
 	display: inline-block;
+	background-color: white;
+	border: 1px solid #CCCCCC;
+	width: auto;
 }
 .acyeditor_disable{
 	/* Netscape */

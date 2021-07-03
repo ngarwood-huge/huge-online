@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <extension type="plugin" version="2.5" method="upgrade" group="editors">
-	<name>AcyMailing Editor (beta)</name>
-	<creationDate>octobre 2014</creationDate>
-	<version>4.8.1</version>
+	<name>AcyMailing Editor</name>
+	<creationDate>décembre 2016</creationDate>
+	<version>5.6.1</version>
 	<author>Acyba</author>
 	<authorEmail>dev@acyba.com</authorEmail>
 	<authorUrl>http://www.acyba.com</authorUrl>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.1
+ * @version	5.6.1
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -126,7 +126,6 @@ class plgAcymailingTagsubscriber extends JPlugin
 
 		if($this->params->get('displayfilter_'.$context,true) == false) return;
 
-		$db = JFactory::getDBO();
 		$fields = acymailing_getColumns('#__acymailing_subscriber');
 		if(empty($fields)) return;
 
@@ -198,19 +197,21 @@ class plgAcymailingTagsubscriber extends JPlugin
 	}
 
 	function onAcyDisplayActions(&$type){
-	 	$type['acymailingfield'] = JText::_('BOUNCE_ACTION');
-	 	$status = array();
-		$status[] = JHTML::_('select.option','confirm',JText::_('CONFIRM_USERS'));
-		$status[] = JHTML::_('select.option','unconfirm',JText::_('ACY_ACTION_UNCONFIRM'));
-		$status[] = JHTML::_('select.option','enable',JText::_('ENABLE_USERS'));
-		$status[] = JHTML::_('select.option','block',JText::_('BLOCK_USERS'));
-		$status[] = JHTML::_('select.option','delete',JText::_('DELETE_USERS'));
+		$config = acymailing_config();
+
+		$type['acymailingfield'] = JText::_('BOUNCE_ACTION');
+		$status = array();
+		$status[] = JHTML::_('select.option', 'confirm', JText::_('CONFIRM_USERS'));
+		$status[] = JHTML::_('select.option', 'unconfirm', JText::_('ACY_ACTION_UNCONFIRM'));
+		$status[] = JHTML::_('select.option', 'enable', JText::_('ENABLE_USERS'));
+		$status[] = JHTML::_('select.option', 'block', JText::_('BLOCK_USERS'));
+
+		if(acymailing_isAllowed($config->get('acl_subscriber_delete', 'all'))) $status[] = JHTML::_('select.option', 'delete', JText::_('DELETE_USERS'));
 
 		$content = '<div id="action__num__acymailingfield">'.JHTML::_('select.genericlist',   $status, "action[__num__][acymailingfield][action]", 'class="inputbox" size="1"', 'value', 'text').'</div>';
 
 		if(!acymailing_level(3)) return $content;
 
-		$db = JFactory::getDBO();
 		$fields = acymailing_getColumns('#__acymailing_subscriber');
 		if(empty($fields)) return $content;
 
@@ -270,6 +271,7 @@ class plgAcymailingTagsubscriber extends JPlugin
 
 	 function onAcyProcessAction_acymailingfield($cquery,$action,$num){
 
+		$config = acymailing_config();
 		$subClass = acymailing_get('class.subscriber');
 
 	 	if($action['action'] == 'confirm'){
@@ -285,29 +287,30 @@ class plgAcymailingTagsubscriber extends JPlugin
 				}
 			}
 			unset($cquery->where['confirmed']);
-			return JText::sprintf('NB_CONFIRMED',count($allSubids));
-	 	}
+			return JText::sprintf('NB_CONFIRMED', count($allSubids));
+		}
 
-	 	if($action['action'] == 'enable'){
-	 		$action['map'] = 'enabled';
-	 		$action['value'] = 1;
-	 		return $this->onAcyProcessAction_acymailingfieldval($cquery,$action,$num);
-	 	}
+		if($action['action'] == 'enable'){
+			$action['map'] = 'enabled';
+			$action['value'] = 1;
+			return $this->onAcyProcessAction_acymailingfieldval($cquery, $action, $num);
+		}
 
-	 	if($action['action'] == 'block'){
-	 		$action['map'] = 'enabled';
-	 		$action['value'] = 0;
-	 		return $this->onAcyProcessAction_acymailingfieldval($cquery,$action,$num);
-	 	}
+		if($action['action'] == 'block'){
+			$action['map'] = 'enabled';
+			$action['value'] = 0;
+			return $this->onAcyProcessAction_acymailingfieldval($cquery, $action, $num);
+		}
 
-	 	if($action['action'] == 'unconfirm'){
-	 		$action['map'] = 'confirmed';
-	 		$action['value'] = 0;
-	 		return $this->onAcyProcessAction_acymailingfieldval($cquery,$action,$num);
-	 	}
+		if($action['action'] == 'unconfirm'){
+			$action['map'] = 'confirmed';
+			$action['value'] = 0;
+			return $this->onAcyProcessAction_acymailingfieldval($cquery, $action, $num);
+		}
 
-	 	if($action['action'] == 'delete'){
- 			$query = $cquery->getQuery(array('sub.subid'));
+		if($action['action'] == 'delete'){
+			if(!acymailing_isAllowed($config->get('acl_subscriber_delete', 'all'))) return 'Not allowed to delete users';
+			$query = $cquery->getQuery(array('sub.subid'));
 			$cquery->db->setQuery($query);
 			$allSubids = acymailing_loadResultArray($cquery->db);
 			$nbAffected = $subClass->delete($allSubids);

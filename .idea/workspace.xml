@@ -1,70 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3838e591-1012-412c-b57e-6bb2fe964fd2" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="848bfd11-9746-4e52-b6b5-f96a06c3fc91" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ComposerSettings">
-    <execution>
-      <executable />
-    </execution>
+    <execution />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="SCHEME" value="Project" />
+  <component name="ProjectId" id="1nw0Lx6p0ZaagcyX8f2C7yvjB0a" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
-  <component name="JoomlaConfiguration" enabled="true">
-    <joomlaConfigPath>C:\xampp\huge-online\configuration.php</joomlaConfigPath>
-    <joomlaPath>C:\xampp\install</joomlaPath>
-  </component>
-  <component name="PhpWorkspaceProjectConfiguration">
-    <include_path>
-      <path value="$PROJECT_DIR$/../install" />
-      <path value="$PROJECT_DIR$/../install" />
-    </include_path>
-  </component>
-  <component name="ProjectId" id="1SmQ2x6qhKaWOevZw7BR1dBIiMd" />
   <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
-    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
-    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/configuration.php" />
-    <property name="settings.editor.selected.configurable" value="web.server" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="3838e591-1012-412c-b57e-6bb2fe964fd2" name="Default Changelist" comment="" />
-      <created>1572166087335</created>
+      <changelist id="848bfd11-9746-4e52-b6b5-f96a06c3fc91" name="Default Changelist" comment="" />
+      <created>1612285794757</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1572166087335</updated>
-      <workItem from="1572166091174" duration="7254000" />
-      <workItem from="1572376054283" duration="711000" />
+      <updated>1612285794757</updated>
+      <workItem from="1612285795924" duration="14196000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
 </project>

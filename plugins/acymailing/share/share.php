@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.1
+ * @version	5.6.1
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -72,8 +72,11 @@ class plgAcymailingShare extends JPlugin
 				$imgPath = preg_replace('#^'.preg_quote(ACYMAILING_ROOT,'#').'#i',ACYMAILING_LIVE,$onePict);
 				$imgPath = str_replace(DS,'/',$imgPath);
 
-				if($desc == JText::_('ACY_PRINT')) $insertedtag = '<a target="_blank" href="{print:newsletter}" title="'.JText::_('ACY_PRINT').'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
-				else $insertedtag = '<a target="_blank" href="{sharelink:'.$name.'}" title="'.JText::sprintf('SOCIAL_SHARE',$desc).'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+				if($desc == JText::_('ACY_PRINT')){
+					$insertedtag = '<a target="_blank" href="{print:newsletter}" title="'.JText::_('ACY_PRINT').'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+				}else{
+					$insertedtag = '<a target="_blank" href="{sharelink:'.$name.'}" title="'.JText::sprintf('SOCIAL_SHARE', $desc).'" ><img src="'.$imgPath.'" alt="'.$desc.'" /></a>';
+				}
 
 				echo '<img style="max-width:200px;cursor:pointer;padding:5px;" onclick="setTag(\''.htmlentities($insertedtag).'\');insertTag();" src="'.$imgPath.'" />';
 			}
@@ -96,7 +99,7 @@ class plgAcymailingShare extends JPlugin
 
 		if(!$found) return;
 
-		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid,$this->params->get('template','component') == 'component' ? true : false);
+		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid, false, $this->params->get('template', 'component') == 'component' ? true : false);
 		if(empty($email->published)){
 			$archiveLink .= (strpos($archiveLink,'?') ? '&' : '?').'time='.time();
 		}
@@ -156,8 +159,7 @@ class plgAcymailingShare extends JPlugin
 		$variables = array('subject','body','altbody');
 		$acypluginsHelper = acymailing_get('helper.acyplugins');
 		$tags = $acypluginsHelper->extractTags($email, 'print');
-
-		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid,$this->params->get('template','component') == 'component' ? true : false);
+		$archiveLink = acymailing_frontendLink('index.php?option=com_acymailing&ctrl=archive&task=view&mailid='.$email->mailid, true, $this->params->get('template', 'component') == 'component' ? true : false);
 		$addkey = (!empty($email->key)) ? '&key='.$email->key : '';
 		$adduserkey = (!empty($user->key)) ? '&subid='.$user->subid.'-'.$user->key : '';
 		$link = $archiveLink . '&print=1' . $addkey . $adduserkey;

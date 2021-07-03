@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.8.1
+ * @version	5.6.1
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -166,9 +166,56 @@ class plgAcymailingTemplate extends JPlugin
 		$acypluginsHelper = acymailing_get('helper.acyplugins');
 		$acypluginsHelper->fixPictureDim($email->body);
 
+		$this->linksSEF($email);
 	}//endfct
 
-	public function _convertSpaces($matches) {
+	public function linksSEF(&$email){
+		$acypluginsHelper = acymailing_get('helper.acyplugins');
+		$tags = $acypluginsHelper->extractTags($email, 'acyfrontsef');
+
+		if(empty($tags)) return;
+
+		$urls = '';
+		$i = 0;
+		foreach($tags as $link => $SEFlink){
+			$urls .= '&urls['.$i.']='.base64_encode($SEFlink->id);
+			$i++;
+		}
+
+		$sefLinks = acymailing_fileGetContent(JURI::root().'index.php?option=com_acymailing&ctrl=url&task=sef'.$urls);
+		$newLinks = json_decode($sefLinks, true);
+
+		if($newLinks == null){
+			$otherarguments = '';
+			$liveParsed = parse_url(ACYMAILING_LIVE);
+			if(isset($liveParsed['path']) AND strlen($liveParsed['path']) > 0){
+				$mainurl = substr(ACYMAILING_LIVE, 0, strrpos(ACYMAILING_LIVE, $liveParsed['path'])).'/';
+				$otherarguments = trim(str_replace($mainurl, '', ACYMAILING_LIVE), '/');
+				if(strlen($otherarguments) > 0) $otherarguments .= '/';
+			}else{
+				$mainurl = ACYMAILING_LIVE;
+			}
+
+			if(!empty($sefLinks) && defined('JDEBUG') && JDEBUG) acymailing_enqueueMessage('Error trying to get the sef links: '.$sefLinks);
+			$newLinks = array();
+			foreach($tags as $oneLink){
+				$link = ltrim($oneLink->id, '/');
+				if(!empty($otherarguments) && strpos($link, $otherarguments) === false) $link = $otherarguments.$link;
+				$newLinks[$oneLink->id] = $mainurl.$link;
+			}
+		}
+		$replacement = array();
+		if(!empty($newLinks)) {
+			foreach ($newLinks as $origin => $new) {
+				$replacement['%7Bacyfrontsef:' . $origin . '%7D'] = $new;
+				$replacement['{acyfrontsef:' . $origin . '}'] = $new;
+			}
+			$email->body = str_replace(array_keys($replacement), $replacement, $email->body);
+			$email->altbody = str_replace(array_keys($replacement), $replacement, $email->altbody);
+		}
+	}
+
+	public function _convertSpaces($matches){
 		return "src='".str_replace(' ', '%20', $matches[1])."'";
 	}
 
